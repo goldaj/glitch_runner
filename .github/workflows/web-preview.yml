@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - feat/web-playtest-preview
+      - feat/long-form-playtest-level
   workflow_dispatch:
 
 permissions:
@@ -60,6 +61,8 @@ jobs:
       - name: Verify original movement invariants
         run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_movement.gd
 
+      - name: Verify ten-zone level geometry and interactions
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_long_level.gd
       - name: Export actual playable Godot project to HTML5
         shell: bash
         run: |

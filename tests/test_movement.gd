@@ -80,7 +80,7 @@ func _run_tests() -> void:
 	var finisher = Model.new()
 	for i in range(1200):
 		finisher.step(1.0, false, false, DT)
-	_check(finisher.feet.x >= 2970.0, "normal route reaches finish without any glitch")
+	_check(finisher.feet.x >= 2970.0, "normal path reaches end of former P1 tutorial stretch without any glitch")
 
 	# Control the experiment: identical speed and held-right input on different grades.
 	var flat = Model.new()
