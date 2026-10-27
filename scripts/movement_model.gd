@@ -23,6 +23,7 @@ var responsive_profile: bool = false
 var platform_index: int = -1
 var dead: bool = false
 var spring_armed: bool = true
+var bounce_flight: bool = false
 
 func respawn_at(x: float) -> void:
 	var safe_x: float = clampf(x, 30.0, Course.END_X - 30.0)
@@ -35,6 +36,7 @@ func respawn_at(x: float) -> void:
 	platform_index = -1
 	dead = false
 	spring_armed = true
+	bounce_flight = false
 
 
 func set_responsive_profile(is_responsive: bool) -> void:
@@ -77,20 +79,26 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 			ground_speed = move_toward(ground_speed, 0.0, surplus * OVERSPEED_DRAG * dt)
 		ground_speed = clampf(ground_speed, -GROUND_SAFETY_CAP, GROUND_SAFETY_CAP)
 		if jump_pressed:
+			bounce_flight = false
 			grounded = false
 			platform_index = -1
 			air_velocity = Vector2(ground_speed, -JUMP_SPEED + minf(0.0, ground_speed * slope * 0.16))
 			feet.y -= 0.25
 		elif platform_index < 0:
+			var near_any_spring: bool = false
 			for spring_x in Course.SPRINGS:
-				if absf(feet.x - spring_x) <= 12.0 and spring_armed:
+				var distance: float = absf(feet.x - spring_x)
+				if distance < 28.0:
+					near_any_spring = true
+				if distance <= 12.0 and spring_armed:
 					grounded = false
 					air_velocity = Vector2(ground_speed, -JUMP_SPEED * 1.35)
 					feet.y -= 0.25
+					bounce_flight = true
 					spring_armed = false
 					break
-				elif absf(feet.x - spring_x) > 28.0:
-					spring_armed = true
+			if not near_any_spring:
+				spring_armed = true
 	if grounded:
 		feet.x = clampf(feet.x + ground_speed * dt, Course.START_X, Course.END_X)
 		if platform_index >= 0:
@@ -114,7 +122,7 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 			var air_headroom: float = clampf((AIR_SPEED_CAP - air_velocity.x * axis) / AIR_SPEED_CAP, 0.0, 1.0)
 			air_steer *= air_headroom
 		air_velocity.x = clampf(air_velocity.x + axis * air_steer * dt, -GROUND_SAFETY_CAP, GROUND_SAFETY_CAP)
-		if not jump_held and air_velocity.y < -155.0:
+		if not jump_held and not bounce_flight and air_velocity.y < -155.0:
 			air_velocity.y = -155.0
 		air_velocity.y += GRAVITY * dt
 		var previous_feet: Vector2 = feet
@@ -141,6 +149,7 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 				platform_index = landed_platform
 				ground_speed = air_velocity.x * 0.96
 				air_velocity = Vector2.ZERO
+				bounce_flight = false
 		if feet.y > Course.FALL_LIMIT:
 			dead = true
 
