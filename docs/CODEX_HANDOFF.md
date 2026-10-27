@@ -49,3 +49,12 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - **Issue [#5](https://github.com/goldaj/glitch_runner/issues/5) : plafond de vitesse**. L'actuel `movement_model.gd` borne `ground_speed` à `GROUND_SPEED_CAP` à chaque tick et l'air à `AIR_SPEED_CAP`. Cela suffit au laboratoire P1, mais **annulerait instantanément tout surplus d'élan issu d'un futur glitch**. Ne pas étendre G1/G2 sans résoudre et tester vitesse normale vs surplus et amortissement.
 - `main` et les PR ne sont pas fusionnées ; seules des branches dédiées ont été écrites. Les deux runs verts du dernier commit documentaire `b88a1a6` sont [40458826898](https://github.com/goldaj/glitch_runner/actions/runs/40458826898) et [40458831597](https://github.com/goldaj/glitch_runner/actions/runs/40458831597).
 - **Ordre** : #2 playtest H1 puis, en cas de résultat favorable, #3 et #5 recherches/architecture, puis premier G1 testé, puis #4 H3. Ce chantier s'arrête proprement ici sur une dépendance humaine explicite, non sur une limite artificielle de backlog.
+
+## 2026-10-27 — Branche Web, futur playtest H1 (ajout)
+- Branche isolée `feat/web-playtest-preview` créée depuis `feat/foundation-movement-p1` (ne pas fusionner en `main` sans coordination).
+- Préréglage `export_presets.cfg` « Web », Godot 4.7.2 stable et `variant/thread_support=false`, afin de fonctionner sous GitHub Pages sans SharedArrayBuffer.
+- `.github/workflows/web-preview.yml` : export réel, artifact ZIP, publication générée sur branche `gh-pages` (ne jamais modifier manuellement ses fichiers sans raison).
+- Guide d'utilisation : `docs/WEB_PLAYTEST.md`. **Un réglage propriétaire indispensable** : dans GitHub Settings → Pages, sélectionner Deploy from a branch → gh-pages /root. Aucun token normal de GitHub Actions ne l'active automatiquement.
+- URL prévue **une fois activée** : https://goldaj.github.io/glitch_runner/ .
+- **Aucun G1/G2 implémenté** : la page est le labo A/B P1 pour tester H1. Ne pas la présenter comme jeu complet.
+- Rester factuel : l'existence d'un workflow n'établit pas sa réussite. Reporter le résultat d'export, la présence de gh-pages, et la disponibilité HTTPS après vérification.

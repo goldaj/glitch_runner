@@ -44,3 +44,10 @@
 - [ ] P6.3 Playtests novices/experts ; go/no-go avant campagne.
 
 **Clôture d'une sous-étape** : fichier/commit + test réellement exécuté ou limitation explicite + observation documentée + tâche suivante confiable.
+ 
+**P1.W — Diffusion Web pour recueillir le playtest H1 (branche isolée `feat/web-playtest-preview`)**
+- [x] P1.W1 Ajouter le préréglage Web Godot 4.7.2, **sans threads** pour GitHub Pages ; aucun changement de physique.
+- [x] P1.W2 Ajouter workflow export HTML/WASM/PCK + ZIP + publication dans `gh-pages` (source écrite, **à valider en run**).
+- [x] P1.W3 Documenter lancement un-clic, limites et activation Settings → Pages.
+- [ ] P1.W4 Valider la CI **et** les fichiers réellement publiés puis l'accès HTTPS (celui-ci peut attendre l'activation Pages par le propriétaire).
+- [ ] P1.W5 Réaliser H1 humain avec la page de test ; même blocage avant G1.

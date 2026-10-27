@@ -1,0 +1,83 @@
+name: Export and publish web playtest (Godot 4.7.2)
+
+on:
+  push:
+    branches:
+      - feat/web-playtest-preview
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: web-preview
+  cancel-in-progress: true
+
+jobs:
+  web-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout tested game branch
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.2 stable (official Linux binary)
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output /tmp/godot.zip "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.7.2-stable_linux.x86_64
+          echo "/tmp" >> "$GITHUB_PATH"
+          /tmp/Godot_v4.7.2-stable_linux.x86_64 --headless --version
+
+      - name: Install official web export template (single-thread, GitHub Pages compatible)
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output /tmp/godot-templates.tpz "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz"
+          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.7.2.stable"
+          mkdir -p "$TEMPLATE_DIR"
+          unzip -jo /tmp/godot-templates.tpz 'templates/web_nothreads_release.zip' 'templates/version.txt' -d "$TEMPLATE_DIR"
+          test -s "$TEMPLATE_DIR/web_nothreads_release.zip"
+          rm -f /tmp/godot-templates.tpz
+          ls -lh "$TEMPLATE_DIR"
+
+      - name: Import source files
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --editor --path . --import --quit
+
+      - name: Verify original movement invariants
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_movement.gd
+
+      - name: Export actual playable Godot project to HTML5
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/web
+          Godot_v4.7.2-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
+          test -s build/web/index.html
+          test -s build/web/index.wasm
+          test -s build/web/index.pck
+          test -s build/web/index.js
+          touch build/web/.nojekyll
+          echo "Web artifacts:"
+          ls -lh build/web
+
+      - name: Upload downloadable playable site as ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: glitch-runner-web-playtest
+          path: build/web/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish generated build into gh-pages branch in this repo
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./build/web
+          force_orphan: true
+          enable_jekyll: false
+          commit_message: "build(web): export tested movement lab from ${{ github.sha }}"

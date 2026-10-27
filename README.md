@@ -16,6 +16,12 @@ Ouvrir le dossier dans **Godot 4.7.2 stable** et exécuter la scène principale.
 
 Vérification : `godot --headless --editor --path . --import --quit` puis `godot --headless --path . --script res://tests/test_movement.gd` (nécessite Godot 4.7.2 installé). La CI automatise ces commandes. **Compilation et tests ne prouvent pas le ressenti**.
 
+## Tester le jeu dans un navigateur
+
+[**Version Web de test**](https://goldaj.github.io/glitch_runner/) (nécessite l'activation initiale GitHub Pages si le lien n'est pas encore actif). [Mode d'emploi et contrôle du déploiement](docs/WEB_PLAYTEST.md).
+
+Le workflow de la branche `feat/web-playtest-preview` exporte réellement le projet Godot en HTML5 et conserve le build compilé sur la branche `gh-pages` du même dépôt, ainsi qu'en ZIP depuis GitHub Actions. Pas d'installation locale pour jouer sur Pages.
+
 ## Docs et collaboration
 [Archive complète du concept](docs/INCUBATOR_CONCEPT.md) · [Étude](docs/RESEARCH.md) · [Roadmap](docs/ROADMAP.md) · [Handoff Codex](docs/CODEX_HANDOFF.md) · [Historique des échanges](docs/CHATGPT_PROJECT_HISTORY.md) · [AGENTS](AGENTS.md)
 
