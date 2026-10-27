@@ -17,6 +17,7 @@
 - [ ] P1.5c Comparatif A/B **humain** clavier/manette, synthèse observations et décision H1. Ne pas déclarer H1 validée sur un simple test CI.
 
 **P2 — G1, Corner Slip (bloqué par H1)**
+- [ ] P2.0 Séparer vitesse normale et **surplus post-glitch conservé** : plafonds/decay/air-sol et tests, cf. issue #5 (bloqué par H1).
 - [ ] P2.1 Choisir véritable système de collisions murs/coins et éviter tunneling.
 - [ ] P2.2 Écrire tests limites, sécurité des sorties, préconditions observables.
 - [ ] P2.3 Premier glitch déterminé par le geste, sans bouton magique.

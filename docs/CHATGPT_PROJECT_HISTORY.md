@@ -30,3 +30,6 @@ Les deux runs CI du changement A/B ont été observés verts (40458297529 et 404
 
 ## 2026-10-27 — Vérification finale de la base P1 (assistant, résumé reconstruit)
 CI du commit `6f27e1b` observée successful dans deux runs (40458594556, 40458599650). Inspection du job : import du projet, tests automatisés, lancement headless de la scène (180 frames), tous les steps successful. Ligne de sortie des tests `PASS movement_lab: 17 invariants`. Aucun playtest visuel ou manette n'a été exécuté ; passage H1 non validé, aucune implémentation G1/G2. Documentation actualisée en conséquence.
+
+## 2026-10-27 — Alerte architecturale (assistant, résumé reconstruit)
+Le modèle P1 applique un plafond strict à la vitesse au sol (et en l'air). Risque de casser le futur plaisir central : un glitch qui conserve une vitesse supérieure à la course normale. L'assistant a créé l'issue #5 pour distinguer plafond normal, surplus autorisé, amortissement et passage sol/air, en dépendance du playtest H1. Deux nouvelles CI du commit documentaire `b88a1a6` ont été observées vertes (40458826898, 40458831597). Pas de code de glitch ni de validation humaine.

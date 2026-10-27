@@ -44,3 +44,8 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - Les invariants couvrent accélération, freinage, friction, hauteur du saut, pente, répétition identique dans un même environnement, reset, différence A/B et franchissement du parcours sans glitch.
 - **GATE restant : #2 H1 playtest avec de vraies personnes.** Ne pas transformer une CI verte en validation game design.
 - La PR #1 reste brouillon/non fusionnée ; la PR incubateur #5 est séparée. Aucune fusion par ChatGPT.
+
+## Risque P2 identifié et ordre de reprise
+- **Issue [#5](https://github.com/goldaj/glitch_runner/issues/5) : plafond de vitesse**. L'actuel `movement_model.gd` borne `ground_speed` à `GROUND_SPEED_CAP` à chaque tick et l'air à `AIR_SPEED_CAP`. Cela suffit au laboratoire P1, mais **annulerait instantanément tout surplus d'élan issu d'un futur glitch**. Ne pas étendre G1/G2 sans résoudre et tester vitesse normale vs surplus et amortissement.
+- `main` et les PR ne sont pas fusionnées ; seules des branches dédiées ont été écrites. Les deux runs verts du dernier commit documentaire `b88a1a6` sont [40458826898](https://github.com/goldaj/glitch_runner/actions/runs/40458826898) et [40458831597](https://github.com/goldaj/glitch_runner/actions/runs/40458831597).
+- **Ordre** : #2 playtest H1 puis, en cas de résultat favorable, #3 et #5 recherches/architecture, puis premier G1 testé, puis #4 H3. Ce chantier s'arrête proprement ici sur une dépendance humaine explicite, non sur une limite artificielle de backlog.
