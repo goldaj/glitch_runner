@@ -66,6 +66,34 @@ func _run() -> void:
 	far_edge.step(1.0, false, true, DT)
 	_expect(not far_edge.grounded and far_edge.feet.y > Course.height_at(far_edge.feet.x), "pit exit from below is not an automatic rescue")
 
+	# Sweep regression grid: adversarial approaches from both directions on
+	# 70+ slopes and every terrain seam, at many speeds and ascending/descending.
+	var scenarios: int = 0
+	for segment_index in range(Course.POINTS.size() - 1):
+		var begin: Vector2 = Course.POINTS[segment_index]
+		var end: Vector2 = Course.POINTS[segment_index + 1]
+		var steep: float = (end.y - begin.y) / (end.x - begin.x)
+		for toward in [-1.0, 1.0]:
+			if steep * toward >= -0.13:
+				continue
+			for speed in [350.0, 650.0, 900.0]:
+				for vy in [-35.0, 15.0, 80.0]:
+					var x: float = (begin.x + end.x) * 0.5
+					var start_y: float = Course.height_at(x) - 1.0
+					var test_end_x: float = x + toward * speed * DT
+					if not Course.has_ground_at(x) or not Course.has_ground_at(test_end_x):
+						continue
+					var m: RefCounted = _airborne(x, toward * speed, vy, 1.0)
+					m.step(toward, false, true, DT)
+					if m.feet.x == test_end_x:
+						pass
+					# It may still be airborne if the profile does not reach the
+					# feet this tick. It must NEVER be inside valid solid ground.
+					if not m.grounded:
+						_expect(m.feet.y <= Course.height_at(m.feet.x) + 0.01, "no terrain tunneling at segment %d speed %.0f direction %.0f vy %.0f" % [segment_index, speed, toward, vy])
+					scenarios += 1
+	_expect(scenarios >= 100, "sweep tested at least 100 rising-slope cases")
+
 	if failures.is_empty():
 		print("PASS ground_contact: %d checks" % checks)
 		quit(0)

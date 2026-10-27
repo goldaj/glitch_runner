@@ -210,3 +210,56 @@ static func next_gap_ahead(x: float) -> Vector2:
 		if gap.y > x:
 			return gap
 	return Vector2(-1.0, -1.0)
+
+## Continuous contact against the solid heightfield, not the endpoint alone.
+## Searches breakpoints of terrain segments AND true gaps. Each interval has a
+## linear floor; the first above-to-below crossing is the first legal collision.
+## Empty Dictionary = no contact (a real hole, below the far lip, or no crossing).
+static func first_ground_contact(from_feet: Vector2, to_feet: Vector2) -> Dictionary:
+	var dx: float = to_feet.x - from_feet.x
+	var dy: float = to_feet.y - from_feet.y
+	const EPS: float = 0.0001
+
+	if absf(dx) < EPS:
+		if not has_ground_at(from_feet.x):
+			return {}
+		var floor_y: float = height_at(from_feet.x)
+		if dy > EPS and from_feet.y <= floor_y + EPS and to_feet.y >= floor_y - EPS:
+			var t: float = clampf((floor_y - from_feet.y) / dy, 0.0, 1.0)
+			return {"fraction": t, "position": Vector2(from_feet.x, floor_y)}
+		return {}
+
+	var lo: float = minf(from_feet.x, to_feet.x)
+	var hi: float = maxf(from_feet.x, to_feet.x)
+	var cuts: Array[float] = [from_feet.x, to_feet.x]
+	for knot in POINTS:
+		if knot.x > lo and knot.x < hi:
+			cuts.append(knot.x)
+	for hole in GAPS:
+		if hole.x > lo and hole.x < hi:
+			cuts.append(hole.x)
+		if hole.y > lo and hole.y < hi:
+			cuts.append(hole.y)
+	cuts.sort()
+	if dx < 0.0:
+		cuts.reverse()
+
+	for i in range(cuts.size() - 1):
+		var x0: float = cuts[i]
+		var x1: float = cuts[i + 1]
+		if absf(x1 - x0) < EPS:
+			continue
+		if not has_ground_at((x0 + x1) * 0.5):
+			continue
+		var t0: float = (x0 - from_feet.x) / dx
+		var t1: float = (x1 - from_feet.x) / dx
+		var f0: float = from_feet.y + dy * t0 - height_at(x0)
+		var f1: float = from_feet.y + dy * t1 - height_at(x1)
+		# Positive f means player's feet are inside/below the solid surface.
+		# Check the sign of relative movement, not vertical air speed alone.
+		if f0 <= EPS and f1 >= -EPS and f1 - f0 > EPS:
+			var along: float = clampf(-f0 / (f1 - f0), 0.0, 1.0)
+			var hit_t: float = lerpf(t0, t1, along)
+			var hit_x: float = lerpf(from_feet.x, to_feet.x, hit_t)
+			return {"fraction": hit_t, "position": Vector2(hit_x, height_at(hit_x))}
+	return {}

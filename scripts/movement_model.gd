@@ -128,28 +128,36 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 		var previous_feet: Vector2 = feet
 		feet += air_velocity * dt
 		feet.x = clampf(feet.x, Course.START_X, Course.END_X)
-		if air_velocity.y >= 0.0:
-			# From above, choose the first solid surface crossed along the step.
-			var collision_y: float = INF
-			var landed_platform: int = -1
-			if Course.has_ground_at(feet.x):
-				var ground_y: float = Course.height_at(feet.x)
-				if previous_feet.y <= ground_y and feet.y >= ground_y:
-					collision_y = ground_y
+		# Sweep along the actual motion segment, breaking it at terrain vertices
+		# and at genuine pits. The old test compared the PREVIOUS y with the
+		# NEXT ground y, which missed a moving player landing on a rising slope.
+		var floor_hit: Dictionary = Course.first_ground_contact(previous_feet, feet)
+		var first_fraction: float = INF
+		var landed_platform: int = -1
+		var ground_contact: Vector2 = Vector2.ZERO
+		if not floor_hit.is_empty():
+			first_fraction = floor_hit["fraction"]
+			ground_contact = floor_hit["position"]
+		if air_velocity.y >= 0.0 and feet.y > previous_feet.y:
+			# One-way ledges only catch a descending player. Compare impact
+			# fractions, not only surface Y at the final X, to respect first contact.
 			for i in range(Course.PLATFORM_SPECS.size()):
 				var ledge: Rect2 = Course.platform_rect(i)
-				if feet.x >= ledge.position.x + 8.0 and feet.x <= ledge.end.x - 8.0:
-					if previous_feet.y <= ledge.position.y and feet.y >= ledge.position.y:
-						if ledge.position.y < collision_y:
-							collision_y = ledge.position.y
+				if previous_feet.y <= ledge.position.y and feet.y >= ledge.position.y:
+					var t: float = (ledge.position.y - previous_feet.y) / (feet.y - previous_feet.y)
+					var impact_x: float = lerpf(previous_feet.x, feet.x, t)
+					if impact_x >= ledge.position.x + 8.0 and impact_x <= ledge.end.x - 8.0:
+						if t < first_fraction:
+							first_fraction = t
+							ground_contact = Vector2(impact_x, ledge.position.y)
 							landed_platform = i
-			if collision_y < INF:
-				feet.y = collision_y
-				grounded = true
-				platform_index = landed_platform
-				ground_speed = air_velocity.x * 0.96
-				air_velocity = Vector2.ZERO
-				bounce_flight = false
+		if first_fraction < INF:
+			feet = ground_contact
+			grounded = true
+			platform_index = landed_platform
+			ground_speed = air_velocity.x * 0.96
+			air_velocity = Vector2.ZERO
+			bounce_flight = false
 		if feet.y > Course.FALL_LIMIT:
 			dead = true
 
