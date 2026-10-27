@@ -27,3 +27,6 @@ La CI GitHub du laboratoire initial a été vérifiée **successful** (run 40457
 
 ## 2026-10-27 — Renforcement de validation et coordination (assistant, résumé reconstruit)
 Les deux runs CI du changement A/B ont été observés verts (40458297529 et 40458303074). Trois tickets ont été ouverts : #2 playtest H1, #3 recherche collisions P2 conditionnée par H1, #4 récompense d'élan H3 après H2. Ajout d'un test de franchissement de la route normale sans glitch et d'un lancement de la scène pendant 180 frames en headless. **Ce troisième changement exige encore sa propre validation CI**. Rien n'a été fusionné.
+
+## 2026-10-27 — Vérification finale de la base P1 (assistant, résumé reconstruit)
+CI du commit `6f27e1b` observée successful dans deux runs (40458594556, 40458599650). Inspection du job : import du projet, tests automatisés, lancement headless de la scène (180 frames), tous les steps successful. Ligne de sortie des tests `PASS movement_lab: 17 invariants`. Aucun playtest visuel ou manette n'a été exécuté ; passage H1 non validé, aucune implémentation G1/G2. Documentation actualisée en conséquence.

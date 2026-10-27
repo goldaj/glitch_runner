@@ -13,7 +13,7 @@
 - [x] P1.4 Tests unitaires headless, workflow GitHub Actions **écrits**.
 - [x] P1.5a Import + tests Godot 4.7.2 observés **verts** dans GitHub Actions (run 40457925457).
 - [x] P1.5b Deux profils A/B sélectionnables + protocole de recueil **écrits** ; CI du changement vert (runs 40458297529 et 40458303074).
-- [x] P1.5d Test de sortie atteignable sans glitch et smoke test de scène **ajoutés**, exécution CI à revérifier.
+- [x] P1.5d Test de sortie atteignable sans glitch et smoke test de scène **ajoutés**, CI **vérifiée verte** sur 6f27e1b (runs 40458594556 et 40458599650, 17 invariants passés, scène lancée 180 frames).
 - [ ] P1.5c Comparatif A/B **humain** clavier/manette, synthèse observations et décision H1. Ne pas déclarer H1 validée sur un simple test CI.
 
 **P2 — G1, Corner Slip (bloqué par H1)**

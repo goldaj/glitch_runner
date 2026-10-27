@@ -37,3 +37,10 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - Renforcement suivant : smoke test de la **vraie scène** dans la CI, plus test de route normale jusqu'à l'arrivée ; son résultat doit être vérifié sur le commit correspondant.
 - Tickets de coordination : [#2 playtest H1](https://github.com/goldaj/glitch_runner/issues/2) **bloquant**, [#3 architecture des collisions P2](https://github.com/goldaj/glitch_runner/issues/3) à étudier seulement après H1, [#4 expérience H3](https://github.com/goldaj/glitch_runner/issues/4) après H2.
 - État conceptuel : aucun glitch codé, H1 non évaluée humainement, P2 et P3 non commencés.
+
+## Bilan vérifié sur le commit 6f27e1b (27/10/2026)
+- CI du **code P1 A/B + route normale + smoke de scène** : deux runs verts https://github.com/goldaj/glitch_runner/actions/runs/40458594556 et https://github.com/goldaj/glitch_runner/actions/runs/40458599650.
+- Job `test` confirmé : Godot 4.7.2 installé, import success, **17 invariants PASS** (sortie explicite des logs), **scene 180 frames success**.
+- Les invariants couvrent accélération, freinage, friction, hauteur du saut, pente, répétition identique dans un même environnement, reset, différence A/B et franchissement du parcours sans glitch.
+- **GATE restant : #2 H1 playtest avec de vraies personnes.** Ne pas transformer une CI verte en validation game design.
+- La PR #1 reste brouillon/non fusionnée ; la PR incubateur #5 est séparée. Aucune fusion par ChatGPT.
