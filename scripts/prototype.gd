@@ -74,7 +74,16 @@ func _update_hud() -> void:
 	var seconds: float = float(ticks) / 60.0
 	var status: String = "ARRIVÉE (R pour recommencer)" if finished else "Laboratoire P1 · sans glitch"
 	var label: String = "A réactif" if runner.responsive_profile else "B inertiel"
-	hud.text = "%s  |  Profil : %s (1=A, 2=B)\nTemps : %.2f s | vitesse : %.0f px/s | vmax : %.0f px/s | sauts : %d\n←/→ déplacement · Espace/Entrée saut · R reset" % [status, label, seconds, runner.speed(), max_run_speed, jumps]
+	var horizontal_speed: float = runner.ground_speed if runner.grounded else runner.air_velocity.x
+	var grade: float = Course.slope_at(runner.feet.x)
+	var grade_in_motion: float = grade * signf(horizontal_speed)
+	var terrain_label: String = "plat"
+	if grade_in_motion > 0.02:
+		terrain_label = "descente"
+	elif grade_in_motion < -0.02:
+		terrain_label = "montée"
+	var extra: String = " (+ élan)" if runner.grounded and absf(horizontal_speed) > MovementModel.GROUND_SPEED_CAP else ""
+	hud.text = "%s  |  Profil : %s (1=A, 2=B)\nTemps : %.2f s | vx : %.0f px/s%s | vmax : %.0f | sauts : %d\nTerrain : %s  |  ←/→ courir · Espace sauter · R reset" % [status, label, seconds, horizontal_speed, extra, max_run_speed, jumps, terrain_label]
 
 func _draw() -> void:
 	draw_rect(Rect2(0.0, 0.0, Course.END_X, 820.0), Color(0.10, 0.15, 0.22), true)

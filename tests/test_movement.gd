@@ -25,10 +25,15 @@ func _run_tests() -> void:
 	for i in range(8):
 		runner.step(-1.0, false, false, DT)
 	_check(runner.ground_speed < before_brake, "reverse input brakes")
-	var before_friction: float = runner.ground_speed
+	# Coasting on a slope can ACCELERATE under gravity. Check friction on flat only.
+	var rolling = Model.new()
+	rolling.feet.x = 1300.0
+	rolling.feet.y = Course.height_at(1300.0)
+	rolling.ground_speed = 250.0
+	var before_friction: float = rolling.ground_speed
 	for i in range(12):
-		runner.step(0.0, false, false, DT)
-	_check(absf(runner.ground_speed) < absf(before_friction), "no input slows speed")
+		rolling.step(0.0, false, false, DT)
+	_check(absf(rolling.ground_speed) < absf(before_friction), "no input slows speed on flat ground")
 
 	var held = Model.new()
 	var tapped = Model.new()
@@ -61,20 +66,50 @@ func _run_tests() -> void:
 	var inertial = Model.new()
 	var reactive = Model.new()
 	reactive.set_responsive_profile(true)
-	for i in range(60):
-		inertial.step(1.0, false, false, DT)
-		reactive.step(1.0, false, false, DT)
+	for model in [inertial, reactive]:
+		model.feet.x = 1300.0
+		model.feet.y = Course.height_at(1300.0)
+		model.ground_speed = 300.0
 	for i in range(8):
 		inertial.step(0.0, false, false, DT)
 		reactive.step(0.0, false, false, DT)
 	_check(reactive.responsive_profile, "A responsive mode is active")
-	_check(reactive.ground_speed < inertial.ground_speed, "A loses speed faster than B")
+	_check(reactive.ground_speed < inertial.ground_speed, "A loses speed faster than B on the same flat stretch")
 	reactive.set_responsive_profile(false)
 	_check(not reactive.responsive_profile and reactive.feet.x == 130.0, "profile change resets trial")
 	var finisher = Model.new()
 	for i in range(1200):
 		finisher.step(1.0, false, false, DT)
 	_check(finisher.feet.x >= 2970.0, "normal route reaches finish without any glitch")
+
+	# Control the experiment: identical speed and held-right input on different grades.
+	var flat = Model.new()
+	var descending = Model.new()
+	var climbing = Model.new()
+	for candidate in [flat, descending, climbing]:
+		candidate.ground_speed = 420.0
+	flat.feet = Vector2(1400.0, Course.height_at(1400.0))
+	descending.feet = Vector2(400.0, Course.height_at(400.0))
+	climbing.feet = Vector2(850.0, Course.height_at(850.0))
+	for i in range(15):
+		flat.step(1.0, false, false, DT)
+		descending.step(1.0, false, false, DT)
+		climbing.step(1.0, false, false, DT)
+	_check(descending.ground_speed > flat.ground_speed + 25.0, "downhill is faster than flat with identical input")
+	_check(climbing.ground_speed < flat.ground_speed - 45.0, "uphill brakes despite holding right")
+	_check(descending.ground_speed > Model.GROUND_SPEED_CAP, "downhill can exceed normal running cap")
+	_check(climbing.ground_speed > 0.0, "ordinary route can still climb uphill")
+	var kept = Model.new()
+	kept.feet = Vector2(1210.0, Course.height_at(1210.0))
+	kept.ground_speed = Model.GROUND_SPEED_CAP + 100.0
+	kept.step(1.0, false, false, DT)
+	_check(kept.ground_speed > Model.GROUND_SPEED_CAP, "flat stretch retains terrain-earned overspeed")
+	_check(kept.ground_speed < Model.GROUND_SPEED_CAP + 100.0, "terrain-earned overspeed decays gently")
+	var descent_from_other_side = Model.new()
+	descent_from_other_side.feet = Vector2(980.0, Course.height_at(980.0))
+	descent_from_other_side.ground_speed = -250.0
+	descent_from_other_side.step(0.0, false, false, DT)
+	_check(descent_from_other_side.ground_speed < -250.0, "gravity accelerates descending toward the left too")
 	if failures.is_empty():
 		print("PASS movement_lab: %d invariants" % checks)
 		quit(0)

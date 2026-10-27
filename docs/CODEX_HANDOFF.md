@@ -71,3 +71,10 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - **Seule étape de mise en ligne manquante connue** : activer GitHub Pages dans Settings → Pages → Deploy from a branch → gh-pages/(root). Impossible d'affirmer URL active sans cela. Une fois activée, vérifier https://goldaj.github.io/glitch_runner/ .
 - `docs/WEB_PLAYTEST.md` donne touches et protocole. Aucun feedback humain H1. Codex ne doit pas généraliser « CI verte » au ressenti.
 - Amélioration technique non fonctionnelle : cache Actions du template single-thread pour éviter de retélécharger l'archive officielle de 1,3 Go à chaque mise à jour ; CI du changement de cache à observer séparément.
+
+## P1.6 — Régression pente signalée et correction (27/10/2026)
+- **Utilisateur, retour de jeu réel :** en test Web, les pentes ne semblent ni accélérer à la descente, ni freiner à la montée.
+- **Cause confirmée par lecture du code :** le modèle bornait `ground_speed` à ±420 px/s **à chaque tick**, immédiatement après avoir calculé `SLOPE_FORCE`, ce qui jetait l'excédent ; l'accélération constante sous input dominait l'opposition d'une montée. Le HUD montrait aussi la norme totale de `air_velocity`, susceptible de brouiller l'interprétation.
+- **Correctif P1.6 sur la branche Web** : l'accélération de la touche décroît près de la vitesse normale cible (sans écraser la vélocité obtenue du terrain), force de gravité de pente renforcée, frottement distinct A/B, léger amortissement de surplus (0,45/s) et garde-fou absolu de P1. HUD `vx` + descente/montée dans le sens de déplacement + témoin surplus. Tests comparatifs tenus à vitesse d'entrée identique, dans les deux sens.
+- **Ne pas confondre** cette correction exploratoire avec la résolution finale de #5 : une fois G1 ajouté, il faudra tester vitesse exceptionnelle, transitions air/sol, plafonds absolus et contrôles de collision réels. Aucun G1 implémenté ici.
+- Le code, les tests et la documentation ont été écrits. **Validation CI et expérience humaine à consigner après observation**, ne pas inventer de résultats. Export Web automatique depuis `feat/web-playtest-preview` via workflow GitHub Actions.

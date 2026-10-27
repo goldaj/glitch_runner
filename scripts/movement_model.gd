@@ -3,9 +3,13 @@ extends RefCounted
 const Course = preload("res://scripts/course_profile.gd")
 const GROUND_ACCEL: float = 850.0
 const GROUND_BRAKE: float = 1800.0
-const ROLL_FRICTION: float = 320.0
-const SLOPE_FORCE: float = 520.0
+# B: low rolling friction allows terrain to build and retain momentum.
+const ROLL_FRICTION: float = 85.0
+const SLOPE_FORCE: float = 1100.0
+# A cap only on acceleration from input; terrain is allowed to exceed it.
 const GROUND_SPEED_CAP: float = 420.0
+const OVERSPEED_DRAG: float = 0.45
+const GROUND_SAFETY_CAP: float = 900.0
 const AIR_ACCEL: float = 420.0
 const AIR_SPEED_CAP: float = 550.0
 const JUMP_SPEED: float = 495.0
@@ -39,12 +43,26 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 		if absf(axis) > 0.05:
 			var force: float = GROUND_ACCEL * (2.0 if responsive_profile else 1.0)
 			if ground_speed * axis < 0.0:
+				# Opposite input acts as a deliberate brake, even above normal running speed.
 				force = GROUND_BRAKE * (1.5 if responsive_profile else 1.0)
+			else:
+				# Only player input fades out at the normal running speed.
+				# Do NOT clamp the resulting speed here: this would destroy slope momentum.
+				var input_headroom: float = clampf((GROUND_SPEED_CAP - ground_speed * axis) / GROUND_SPEED_CAP, 0.0, 1.0)
+				force *= input_headroom
 			ground_speed += axis * force * dt
 		else:
-			ground_speed = move_toward(ground_speed, 0.0, ROLL_FRICTION * (3.0 if responsive_profile else 1.0) * dt)
-		ground_speed += SLOPE_FORCE * (0.4 if responsive_profile else 1.0) * slope / sqrt(1.0 + slope * slope) * dt
-		ground_speed = clampf(ground_speed, -GROUND_SPEED_CAP, GROUND_SPEED_CAP)
+			ground_speed = move_toward(ground_speed, 0.0, ROLL_FRICTION * (7.0 if responsive_profile else 1.0) * dt)
+		# +slope moves down in screen coordinates; gravity pulls the runner right on
+		# a downward-right slope, left on an upward-right slope. Works both directions.
+		var slope_gravity: float = SLOPE_FORCE * (0.4 if responsive_profile else 1.0) * slope / sqrt(1.0 + slope * slope)
+		ground_speed += slope_gravity * dt
+		# Terrain-earned overspeed survives crests and flat ground, but gently fades.
+		# Separate high emergency bound is only a protection for this simplistic P1 floor.
+		var surplus: float = maxf(0.0, absf(ground_speed) - GROUND_SPEED_CAP)
+		if surplus > 0.0:
+			ground_speed = move_toward(ground_speed, 0.0, surplus * OVERSPEED_DRAG * dt)
+		ground_speed = clampf(ground_speed, -GROUND_SAFETY_CAP, GROUND_SAFETY_CAP)
 		if jump_pressed:
 			grounded = false
 			air_velocity = Vector2(ground_speed, -JUMP_SPEED + minf(0.0, ground_speed * slope * 0.16))

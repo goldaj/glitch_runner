@@ -54,3 +54,11 @@
 - [x] P1.W4c Présence des fichiers sur gh-pages et ZIP/capture en artifacts vérifiée.
 - [ ] P1.W4d Accès HTTPS public : activation GitHub Pages dans Settings par le propriétaire du dépôt, puis test du lien.
 - [ ] P1.W5 Réaliser H1 humain avec la page de test ; même blocage avant G1.
+
+## P1.6 — Correction du ressenti des pentes (retour utilisateur 2026-10-27)
+- [x] Diagnostic du code actuel : vitesse plafonnée à chaque tick à 420 px/s, malgré la force de pente ; accélération du joueur écrase la montée.
+- [x] Séparer plafond d'accélération par input et vitesse de terrain, conserver le surplus et l'amortir progressivement ; effets de pente dans les deux sens.
+- [x] HUD modifié pour afficher **vx horizontal**, pente relative au sens de parcours et surplus, plutôt que la norme de vitesse aérienne qui masquait l'effet.
+- [x] Ajouter tests de la descente, montée, plat, surplus, sens inverse ; **code écrit, CI à vérifier**.
+- [ ] Contrôler run Godot headless, Playwright export Web et version publiée gh-pages.
+- [ ] Faire valider le nouveau ressenti par jeu humain, comparer profils A/B ; H1 non validée.

@@ -46,3 +46,9 @@ L'export officiel Godot 4.7.2 single-thread a passé sa première CI (run 404613
 
 ## 2026-10-27 — Web exécuté en navigateur (assistant, résumé reconstruit)
 La CI [40461694868](https://github.com/goldaj/glitch_runner/actions/runs/40461694868) a fini avec succès : 17 invariants du modèle, export Web officiel et smoke test **Playwright/Chromium réellement exécuté**, canvas visible et touches clavier utilisées sans erreurs JS détectées. Une capture et un ZIP ont été versés comme artifacts, et la branche `gh-pages` a été peuplée. L'URL HTTPS publique reste non confirmée avant l'activation Pages par le propriétaire. Ajout d'un cache CI pour limiter les téléchargements de l'archive d'export de 1,3 Go ; ce changement demandera sa propre validation.
+
+## 2026-10-27 — Retour de test sur les pentes
+**Utilisateur (verbatim ; heure exacte non attestée) :**
+> le test se lance, mais j'ai pas l'impression que les pentes accelère la vitesse en descendant ou la ralenti en montant
+
+**Assistant (résumé reconstruit, non verbatim) :** inspection des constantes et calculs. La force des pentes existait, mais était masquée par un plafonnement strict de la vitesse appliqué après la gravité et par l'accélération continue sous input, spécialement en montée. Révision de la logique de mouvement : cap de l'**effort utilisateur** plutôt que de la vitesse acquise du terrain, drag progressif du surplus, pente relative au mouvement, HUD de vitesse horizontale ; tests contrôlés pour quantifier descente/plat/montée sous mêmes commandes. Pas d'ajout de glitch G1, pas de passage H1, CI et publication à constater après exécution.

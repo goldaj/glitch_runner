@@ -62,3 +62,6 @@ La chaîne d'export inclut désormais un contrôle **Chromium + Playwright** : s
 - **Capture d'écran d'exécution** : [artifact du run](https://github.com/goldaj/glitch_runner/actions/runs/40461694868/artifacts/12714877353).
 - **Build ZIP** : [artifact du run](https://github.com/goldaj/glitch_runner/actions/runs/40461694868/artifacts/12714967049).
 - **Accès public par URL** : non confirmé ; dépend de Settings → Pages. **Test humain d'agrément H1** : non fait.
+
+## Retour du premier playtest et version corrigée P1.6
+Le test humain du 27 octobre a révélé un défaut de ressenti : les pentes ne semblent pas changer la vitesse. Le moteur limitait la vitesse après application de la gravité, effaçant les accélérations en descente. La correction P1.6 laisse désormais la pente dépasser le plafond de course normal et fait ralentir la montée même lorsque la direction est maintenue. Le HUD affiche la **vitesse horizontale `vx`** et le type de terrain. Réessayer la descente en profil **B inertiel**, puis le même trajet sur du plat et en montée. Les tests automatiques ne remplacent pas la confirmation humaine.
