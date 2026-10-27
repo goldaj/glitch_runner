@@ -31,3 +31,9 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - Première CI observée **verte**, run https://github.com/goldaj/glitch_runner/actions/runs/40457925457 : installation Godot 4.7.2, import, tests d'invariants, toutes étapes successful.
 - Ajout ensuite d'un protocole H1 A/B, touches 1 et 2, compteur de sauts, vitesse max et tests distinctifs du freinage ; **nouveau commit à vérifier en CI**.
 - Le protocole complet se trouve dans `docs/PLAYTEST_H1.md`. H1 **toujours non validée par des personnes**. N'ajouter ni G1 ni G2 avant cette validation.
+
+## Références après validation du profil A/B (27/10/2026)
+- Runs verts sur le commit `69296de4` : https://github.com/goldaj/glitch_runner/actions/runs/40458297529 et https://github.com/goldaj/glitch_runner/actions/runs/40458303074 (CI sur push/PR).
+- Renforcement suivant : smoke test de la **vraie scène** dans la CI, plus test de route normale jusqu'à l'arrivée ; son résultat doit être vérifié sur le commit correspondant.
+- Tickets de coordination : [#2 playtest H1](https://github.com/goldaj/glitch_runner/issues/2) **bloquant**, [#3 architecture des collisions P2](https://github.com/goldaj/glitch_runner/issues/3) à étudier seulement après H1, [#4 expérience H3](https://github.com/goldaj/glitch_runner/issues/4) après H2.
+- État conceptuel : aucun glitch codé, H1 non évaluée humainement, P2 et P3 non commencés.

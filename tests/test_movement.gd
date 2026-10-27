@@ -71,6 +71,10 @@ func _run_tests() -> void:
 	_check(reactive.ground_speed < inertial.ground_speed, "A loses speed faster than B")
 	reactive.set_responsive_profile(false)
 	_check(not reactive.responsive_profile and reactive.feet.x == 130.0, "profile change resets trial")
+	var finisher = Model.new()
+	for i in range(1200):
+		finisher.step(1.0, false, false, DT)
+	_check(finisher.feet.x >= 2970.0, "normal route reaches finish without any glitch")
 	if failures.is_empty():
 		print("PASS movement_lab: %d invariants" % checks)
 		quit(0)

@@ -24,3 +24,6 @@ Couverture **partielle**, créée le **27/10/2026**. Les heures exactes des mess
 
 ## 2026-10-27 — Suite de P1 (assistant, résumé reconstruit)
 La CI GitHub du laboratoire initial a été vérifiée **successful** (run 40457925457 : import et tests). L'assistant a ajouté deux réglages A réactif/B inertiel sélectionnables et un protocole de playtest H1. Les changements techniques A/B restent soumis à leur propre exécution de CI. Aucun test humain n'a été exécuté ni simulé.
+
+## 2026-10-27 — Renforcement de validation et coordination (assistant, résumé reconstruit)
+Les deux runs CI du changement A/B ont été observés verts (40458297529 et 40458303074). Trois tickets ont été ouverts : #2 playtest H1, #3 recherche collisions P2 conditionnée par H1, #4 récompense d'élan H3 après H2. Ajout d'un test de franchissement de la route normale sans glitch et d'un lancement de la scène pendant 180 frames en headless. **Ce troisième changement exige encore sa propre validation CI**. Rien n'a été fusionné.

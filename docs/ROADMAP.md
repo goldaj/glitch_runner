@@ -12,7 +12,8 @@
 - [x] P1.3 Terrain dessiné, joueur, caméra anticipée, HUD, chrono local et reset **écrits**.
 - [x] P1.4 Tests unitaires headless, workflow GitHub Actions **écrits**.
 - [x] P1.5a Import + tests Godot 4.7.2 observés **verts** dans GitHub Actions (run 40457925457).
-- [x] P1.5b Deux profils A/B sélectionnables + protocole de recueil **écrits** ; tests techniques à revalider après modification.
+- [x] P1.5b Deux profils A/B sélectionnables + protocole de recueil **écrits** ; CI du changement vert (runs 40458297529 et 40458303074).
+- [x] P1.5d Test de sortie atteignable sans glitch et smoke test de scène **ajoutés**, exécution CI à revérifier.
 - [ ] P1.5c Comparatif A/B **humain** clavier/manette, synthèse observations et décision H1. Ne pas déclarer H1 validée sur un simple test CI.
 
 **P2 — G1, Corner Slip (bloqué par H1)**
