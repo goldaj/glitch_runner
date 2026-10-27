@@ -81,12 +81,21 @@ jobs:
           echo "Web artifacts:"
           ls -lh build/web
 
-      - name: Install Chromium for a real browser smoke test
+      - name: Reuse preinstalled runner Chrome for Web smoke test
         shell: bash
         run: |
           set -euo pipefail
           npm install --no-save playwright@1.64.1
-          npx playwright install chromium --with-deps
+          if command -v google-chrome >/dev/null 2>&1; then
+            echo "CHROME_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
+            google-chrome --version
+          elif command -v google-chrome-stable >/dev/null 2>&1; then
+            echo "CHROME_BIN=$(command -v google-chrome-stable)" >> "$GITHUB_ENV"
+            google-chrome-stable --version
+          else
+            echo "No preinstalled Chrome; installing Playwright Chromium (without apt dependencies)"
+            npx playwright install chromium
+          fi
 
       - name: Run exported game in a browser (WebGL2 / JS / WASM smoke)
         shell: bash

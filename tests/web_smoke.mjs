@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 
 const errors = [];
 const browser = await chromium.launch({
+  ...(process.env.CHROME_BIN ? { executablePath: process.env.CHROME_BIN } : {}),
   headless: true,
   args: ["--enable-unsafe-swiftshader", "--use-gl=angle", "--use-angle=swiftshader"],
 });
