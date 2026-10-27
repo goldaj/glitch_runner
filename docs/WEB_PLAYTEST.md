@@ -76,3 +76,9 @@ Le premier jeu Web a été ouvert avec succès par le propriétaire ; GitHub Pag
 
 ## Prototype dix zones (31 000 px)
 La version longue comporte 30 plateformes à sens unique, 7 fossés, 4 ressorts, 190 éclats et des marqueurs de zones. Elle est exportée depuis la branche `feat/long-form-playtest-level`. Les nouveaux contrôles sont **R** pour reprendre à la zone actuelle et **Maj+R** pour repartir au début. **1/2** sélectionne A/B en repartant de zéro. Le chapitre courant et les éclats sont affichés dans le HUD. Détails : [niveau long](LEVEL_DESIGN_P1_LONG.md). Aucun ennemi et aucun glitch. Vérifier le build courant et éventuellement actualiser par Ctrl+F5 après un déploiement Pages.
+
+## Correction des chutes à travers le sol solide, issue #8
+Le 27 octobre, un essai humain a signalé des passages sous le terrain en sautant tout en avançant, à des endroits sans fossés dessinés. Il s'agissait d'une collision de type **tunneling diagonal** entre deux ticks. Nouveau balayage continu de la trajectoire contre les segments solides, en respectant les **7 vrais fossés**, avec tests de régression à haute vitesse dans les deux directions. Les collisions des plateformes aériennes restent unidirectionnelles.
+- Branche correctrice : `fix/swept-ground-contact`.
+- [Historique CI initial](https://github.com/goldaj/glitch_runner/actions/runs/40548857720) (avant l'ajout du contrôle obligatoire au Web).
+- Le Web ne publie cette branche qu'après succès du nouveau contrôle dédié. Une CI verte vérifie le modèle et le chargement Chromium, mais **les sensations et l'absence de toute autre régression restent à éprouver réellement en jeu**.

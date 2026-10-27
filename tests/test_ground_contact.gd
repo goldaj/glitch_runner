@@ -79,18 +79,17 @@ func _run() -> void:
 			for speed in [350.0, 650.0, 900.0]:
 				for vy in [-35.0, 15.0, 80.0]:
 					var x: float = (begin.x + end.x) * 0.5
-					var start_y: float = Course.height_at(x) - 1.0
 					var test_end_x: float = x + toward * speed * DT
 					if not Course.has_ground_at(x) or not Course.has_ground_at(test_end_x):
 						continue
 					var m: RefCounted = _airborne(x, toward * speed, vy, 1.0)
 					m.step(toward, false, true, DT)
-					if m.feet.x == test_end_x:
-						pass
-					# It may still be airborne if the profile does not reach the
-					# feet this tick. It must NEVER be inside valid solid ground.
-					if not m.grounded:
-						_expect(m.feet.y <= Course.height_at(m.feet.x) + 0.01, "no terrain tunneling at segment %d speed %.0f direction %.0f vy %.0f" % [segment_index, speed, toward, vy])
+					# Every scenario is checked, including cases that correctly land.
+					# Never permit an airborne position visibly below valid solid ground.
+					_expect(
+						m.feet.y <= Course.height_at(m.feet.x) + 0.01,
+						"solid terrain not penetrated at segment %d speed %.0f dir %.0f vy %.0f" % [segment_index, speed, toward, vy]
+					)
 					scenarios += 1
 	_expect(scenarios >= 100, "sweep tested at least 100 rising-slope cases")
 

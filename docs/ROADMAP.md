@@ -72,3 +72,10 @@
 - [x] P1.L3 Ajouter `tests/test_long_level.gd` et sa validation à la CI Godot et Web.
 - [x] P1.L4 Corriger l'impulsion des ressorts : la coupe de saut variable ne doit pas l'annuler. CI Godot **29 + 462 invariants verts** (40546294374). Export et Chromium **verts** (40546293820).
 - [ ] P1.L5 Test humain du parcours entier, réglage des obstacles et caméra ; **H1 reste non validée**, G1 suspendu.
+
+## P1.L bug #8 — Éliminer la traversée de terrain plein
+- [x] Bug signalé sur niveau long ; cause reproduite en **cinq assertions rouges** en CI sur ancien solveur, y compris joueur montant en diagonale.
+- [x] Ajouter balayage des vrais segments de terrain le long du déplacement, séparés aux fossés ; collisions des plateformes comparées dans le temps, pas uniquement en Y.
+- [x] Premier correctif CI **vert** (40548857720), anciens tests et régressions spécifiques.
+- [x] Compter les scénarios paramétrés individuellement dans la batterie de régression ; ajout du test comme **garde de publication** Web.
+- [ ] Vérifier la CI et la publication réelles du dernier commit, puis faire refaire les sauts en diagonale au joueur. Pas de déclaration H1 positive avant cet essai.

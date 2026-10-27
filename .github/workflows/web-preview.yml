@@ -5,6 +5,7 @@ on:
     branches:
       - feat/web-playtest-preview
       - feat/long-form-playtest-level
+      - fix/swept-ground-contact
   workflow_dispatch:
 
 permissions:
@@ -63,6 +64,9 @@ jobs:
 
       - name: Verify ten-zone level geometry and interactions
         run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_long_level.gd
+      - name: Prevent terrain tunneling regression (issue 8)
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_ground_contact.gd
+
       - name: Export actual playable Godot project to HTML5
         shell: bash
         run: |

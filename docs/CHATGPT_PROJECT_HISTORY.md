@@ -64,3 +64,15 @@ Le premier changement de force de pente/cap a passé son import et ses tests. Un
 > c'est pas mal, mais il faudrait un niveau 10 fois plus long, avec plus d'éléments, pour avoir une vraie sensation et donner un avis pertinent. Tu peux imiter le niveau 1 de mario bros 3 (sans ennemis) sur le concept et le compléter dans la même veine pour faire la taille que je te demande, histoire qu'on se projette mieux. Ne te lance pas dans une imitation fidèle, quelque chose dans la veine qui va bien avec une copie conceptuelle est suffisant
 
 **Assistant (résumé reconstruit, non verbatim) :** sur `feat/long-form-playtest-level` construction d'un niveau de 31 000 px, dix zones originales, plateformes, fossés, ressorts, collectibles, checkpoints et visuels provisoires. Reprise de principes généraux de level design sans reproduction graphique ou géométrique de Mario. Tests Godot anciens (29) et nouveaux (462) observés verts dans run 40546294374 après correction du ressort ; export navigateur GitHub Actions 40546293820 success. H1 et la qualité du jeu sur tout le parcours demeurent à éprouver humainement.
+
+## 2026-10-27 — Retour de bug après essai du niveau long
+**Utilisateur (verbatim, heure exacte non attestée) :**
+> je tombe souvent dans le vide quand je saute en avançant en même temps. Il n'y a pas de trou à cet endroit, je tombe à travers de la texture. Souvent.
+
+**Utilisateur (verbatim) :**
+> T'as crash en cours de route. Tu peux reprendre là où tu étais.
+
+**Utilisateur (verbatim répété) :**
+> T'as crash en cours de route. Tu peux reprendre là où tu étais.
+
+**Assistant (résumé reconstruit, non verbatim) :** audit du code de collision des pentes du P1.L, création de l'issue #8 et d'une branche dédiée `fix/swept-ground-contact`. Les tests de reproduction `test_ground_contact.gd` ont échoué pour cinq scénarios sur ancien solveur (run 40548526525). Le remplacement par un balayage continu de la trajectoire avec exclusion des vrais fossés a rendu verte la CI 40548857720 (29 mouvement, 469 géométrie et 18 assertions ciblées). À la reprise, le test a été renforcé pour vérifier séparément tous les scénarios paramétrés et ajouté aux vérifications obligatoires **avant export Web et publication**. Résultats des nouveaux runs à confirmer. Pas de fusion ni de jeu humain simulé.
