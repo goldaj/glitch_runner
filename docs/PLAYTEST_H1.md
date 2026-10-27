@@ -30,3 +30,6 @@ Panel exploratoire cible de 8–12 personnes ; les chiffres ne sont *pas* des r�
 
 ## Limites
 Il s'agit de deux réglages provisoires, **pas d'une preuve d'identité Sonic**. Cette étude évalue H1 (mouvement normal), *pas encore* le plaisir du glitch ni la stabilité cross-OS. Conserver traces brutes et rendre compte des échecs.
+
+## Protocole long : P1.L
+La carte mesure désormais dix fois la longueur initiale. Parcourir au moins plusieurs sections B avant de juger, puis comparer leurs mouvements en A. Consigner le rythme, la satisfaction de vitesse dans les descentes, les erreurs de saut de fossés, la lisibilité de la caméra, le plaisir des chemins hauts et la facilité de reprise. `R` reprend au début du secteur ; `Maj+R` réinitialise tout. Aucune évaluation H1 positive n'est déduite des tests automatiques.

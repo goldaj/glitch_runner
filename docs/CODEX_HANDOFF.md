@@ -87,3 +87,10 @@ En révisant P1.6, un second écrêtage a été identifié : en vol, `air_veloci
 - [Export Web + Chromium + publication 40463364187](https://github.com/goldaj/glitch_runner/actions/runs/40463364187) : **SUCCESS** sur commit `7448652`; dernière évolution HUD incluse.
 - Le propriétaire a confirmé que GitHub Pages s'ouvre normalement, **avant** ces correctifs. Le prochain retour humain sur la physique corrigée reste requis, voir [issue #2](https://github.com/goldaj/glitch_runner/issues/2).
 - PR #6 demeure branche Web isolée, ne pas fusionner automatiquement. Le site `gh-pages` est un **build généré**, ne pas y corriger la physique à la main.
+
+## 27/10/2026 — P1.L : carte x10 et transmission
+- Branche distincte `feat/long-form-playtest-level` issue de `feat/web-playtest-preview`. Le workflow Web publie cette branche sur gh-pages après validation. Pas de fusion automatique ni d'écrasement de PR #6.
+- `docs/LEVEL_DESIGN_P1_LONG.md` est le document de game design : 31 000 px, 10 environnements, 75 sommets, 30 plateformes traversables par-dessous, 7 vrais fossés, 4 ressorts, 190 éclats, reprise toutes les 3 100 unités (9 checkpoints). Source sans asset sous droits.
+- `course_profile.gd` décrit tout le niveau ; `movement_model.gd` gère le sol 1D, les fossés, surfaces à sens unique et impulsions de ressort ; `prototype.gd` gère checkpoint, visuels, orbes et HUD. Limite : **pas de vrais murs/coins**, donc ne pas prétendre que le solveur suffit à G1.
+- Premier test étendu a signalé l'impulsion de ressort coupée par `jump_held=false` : correction dans le modèle via `bounce_flight`. Runs suivants verts : [Godot 40546294374](https://github.com/goldaj/glitch_runner/actions/runs/40546294374) (29 + 462 invariants), [Web 40546293820](https://github.com/goldaj/glitch_runner/actions/runs/40546293820) (export, navigateur et branche gh-pages succès).
+- **Ne pas déclarer le niveau validé humainement** : il reste des risques de placement trop dur, de caméra, de plateformes trop hautes ou de fossés hors rythme. Rejouer H1 issue #2 avant G1.

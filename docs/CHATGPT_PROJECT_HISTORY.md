@@ -58,3 +58,9 @@ Le premier correctif pente passait les tests du modèle et l'export navigateur, 
 
 ## 2026-10-27 — Résultats réels de la correction des pentes (assistant, résumé reconstruit)
 Le premier changement de force de pente/cap a passé son import et ses tests. Une correction complémentaire a levé l'écrêtage de la vitesse aérienne (qui perdait l'élan lors des sauts), puis le HUD `vmax` a été réaligné sur la vitesse horizontale. Les CI du code final `7448652` ont été observées vertes : **29 invariants** (runs 40463364151/40463367736), **export navigateur Chromium et push sur gh-pages** (40463364187). GitHub Pages était auparavant accessible selon le propriétaire. Le retour sur le **nouveau** ressenti reste à recueillir ; aucune validation H1 n'est inventée. Ticket #2 commenté avec le problème et les conditions de vérification.
+
+## 2026-10-27 — Demande de grand niveau exploratoire
+**Utilisateur (verbatim, heure exacte non attestée) :**
+> c'est pas mal, mais il faudrait un niveau 10 fois plus long, avec plus d'éléments, pour avoir une vraie sensation et donner un avis pertinent. Tu peux imiter le niveau 1 de mario bros 3 (sans ennemis) sur le concept et le compléter dans la même veine pour faire la taille que je te demande, histoire qu'on se projette mieux. Ne te lance pas dans une imitation fidèle, quelque chose dans la veine qui va bien avec une copie conceptuelle est suffisant
+
+**Assistant (résumé reconstruit, non verbatim) :** sur `feat/long-form-playtest-level` construction d'un niveau de 31 000 px, dix zones originales, plateformes, fossés, ressorts, collectibles, checkpoints et visuels provisoires. Reprise de principes généraux de level design sans reproduction graphique ou géométrique de Mario. Tests Godot anciens (29) et nouveaux (462) observés verts dans run 40546294374 après correction du ressort ; export navigateur GitHub Actions 40546293820 success. H1 et la qualité du jeu sur tout le parcours demeurent à éprouver humainement.

@@ -73,3 +73,6 @@ Le premier jeu Web a été ouvert avec succès par le propriétaire ; GitHub Pag
 - HUD : `vx`, `vmax` horizontale, témoin « (+ élan) » et indication plat/descente/montée dans le sens du déplacement.
 - [29 tests du mouvement validés](https://github.com/goldaj/glitch_runner/actions/runs/40463364151) et [export + Chrome + branche gh-pages validés](https://github.com/goldaj/glitch_runner/actions/runs/40463364187).
 - **H1 toujours non validée** : revenir sur l'URL publique après déploiement, comparer A/B et noter sensations et erreurs dans [issue #2](https://github.com/goldaj/glitch_runner/issues/2).
+
+## Prototype dix zones (31 000 px)
+La version longue comporte 30 plateformes à sens unique, 7 fossés, 4 ressorts, 190 éclats et des marqueurs de zones. Elle est exportée depuis la branche `feat/long-form-playtest-level`. Les nouveaux contrôles sont **R** pour reprendre à la zone actuelle et **Maj+R** pour repartir au début. **1/2** sélectionne A/B en repartant de zéro. Le chapitre courant et les éclats sont affichés dans le HUD. Détails : [niveau long](LEVEL_DESIGN_P1_LONG.md). Aucun ennemi et aucun glitch. Vérifier le build courant et éventuellement actualiser par Ctrl+F5 après un déploiement Pages.

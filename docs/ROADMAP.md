@@ -65,3 +65,10 @@
 - [x] P1.6b Préservation du surplus aussi **au saut et à la réception** (sinon ancien plafonnement air à 550 px/s détruit l'élan d'une descente), tests ajoutés ; CI à confirmer.
 - [x] P1.6c Validation Godot **29 invariants PASS**, CI runs [40463364151](https://github.com/goldaj/glitch_runner/actions/runs/40463364151) et [40463367736](https://github.com/goldaj/glitch_runner/actions/runs/40463367736), export + navigateur Chromium + publication `gh-pages` **SUCCESS** ([40463364187](https://github.com/goldaj/glitch_runner/actions/runs/40463364187)).
 - [ ] P1.6d Revalidation du **ressenti** après diffusion Pages : comparaison montée/plat/descente et saut à haute vitesse en profil A/B, suivre issue #2.
+
+## P1.L — Niveau longitudinal original pour H1
+- [x] P1.L1 Créer 10 zones de 3 100 px, exactement 10 fois plus long, avec reliefs différents.
+- [x] P1.L2 30 plateformes une face, 7 fossés, 4 ressorts, 190 éclats, 9 checkpoints et décors géométriques.
+- [x] P1.L3 Ajouter `tests/test_long_level.gd` et sa validation à la CI Godot et Web.
+- [x] P1.L4 Corriger l'impulsion des ressorts : la coupe de saut variable ne doit pas l'annuler. CI Godot **29 + 462 invariants verts** (40546294374). Export et Chromium **verts** (40546293820).
+- [ ] P1.L5 Test humain du parcours entier, réglage des obstacles et caméra ; **H1 reste non validée**, G1 suspendu.
