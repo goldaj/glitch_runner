@@ -64,3 +64,10 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - 17 invariants Godot PASS, `index.html`, `index.js`, `index.wasm` (~38 Mio), `index.pck` et fichiers annexes exportés et commités sur la branche [gh-pages](https://github.com/goldaj/glitch_runner/tree/gh-pages) (commit `bd5a666`).
 - Artifact Web ZIP : [exécution GitHub](https://github.com/goldaj/glitch_runner/actions/runs/40461342279/artifacts/12714611805). **Page HTTPS non confirmée active à cette date.**
 - Ajout ultérieur d'un contrôle navigateur dans `tests/web_smoke.mjs` (Playwright/Chromium, touches, JS errors, capture). **Ne pas prétendre que ce nouveau contrôle a passé sans run validé**.
+
+## Résultat du Web smoke et publication (27/10/2026)
+- [Run 40461694868](https://github.com/goldaj/glitch_runner/actions/runs/40461694868) **SUCCESS** : installation Godot 4.7.2, export Web 1-thread, tests **17 invariants PASS**, serveur local puis **Chromium PASS** (canvas visible + inputs + pas de pageerror/console error). Capture [artifact 12714877353](https://github.com/goldaj/glitch_runner/actions/runs/40461694868/artifacts/12714877353).
+- ZIP [artifact 12714967049](https://github.com/goldaj/glitch_runner/actions/runs/40461694868/artifacts/12714967049), binaires **présents dans branche gh-pages** commit `a037452`.
+- **Seule étape de mise en ligne manquante connue** : activer GitHub Pages dans Settings → Pages → Deploy from a branch → gh-pages/(root). Impossible d'affirmer URL active sans cela. Une fois activée, vérifier https://goldaj.github.io/glitch_runner/ .
+- `docs/WEB_PLAYTEST.md` donne touches et protocole. Aucun feedback humain H1. Codex ne doit pas généraliser « CI verte » au ressenti.
+- Amélioration technique non fonctionnelle : cache Actions du template single-thread pour éviter de retélécharger l'archive officielle de 1,3 Go à chaque mise à jour ; CI du changement de cache à observer séparément.

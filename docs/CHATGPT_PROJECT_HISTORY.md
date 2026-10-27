@@ -43,3 +43,6 @@ Le modèle P1 applique un plafond strict à la vitesse au sol (et en l'air). Ris
 
 ## 2026-10-27 — Premier export Web vérifié (assistant, résumé reconstruit)
 L'export officiel Godot 4.7.2 single-thread a passé sa première CI (run 40461342279), comprenant 17 tests de déplacement réussis, création d'une archive ZIP `glitch-runner-web-playtest`, et commit des fichiers HTML/WASM/JS/PCK sur la branche `gh-pages`. GitHub Pages n'a pas encore été confirmé actif (réglage propriétaire). Un smoke test navigateur Playwright/Chromium a ensuite été ajouté, en attente d'observation CI ; aucune validation de ressenti par un humain n'a eu lieu.
+
+## 2026-10-27 — Web exécuté en navigateur (assistant, résumé reconstruit)
+La CI [40461694868](https://github.com/goldaj/glitch_runner/actions/runs/40461694868) a fini avec succès : 17 invariants du modèle, export Web officiel et smoke test **Playwright/Chromium réellement exécuté**, canvas visible et touches clavier utilisées sans erreurs JS détectées. Une capture et un ZIP ont été versés comme artifacts, et la branche `gh-pages` a été peuplée. L'URL HTTPS publique reste non confirmée avant l'activation Pages par le propriétaire. Ajout d'un cache CI pour limiter les téléchargements de l'archive d'export de 1,3 Go ; ce changement demandera sa propre validation.

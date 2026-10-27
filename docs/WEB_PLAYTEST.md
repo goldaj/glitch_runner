@@ -53,3 +53,12 @@ Puis ouvrir `http://localhost:8000/`. Ce mode ne demande ni Godot ni compilation
 ## Contrôle navigateur en CI
 
 La chaîne d'export inclut désormais un contrôle **Chromium + Playwright** : serveur HTTP local, téléchargement de `index.wasm` et `index.pck`, démarrage réel du moteur, présence d'un canvas visible, émulation des touches de déplacement et capture d'écran dans les artifacts GitHub Actions. Cette vérification est plus forte qu'un simple export réussi, mais **ne remplace pas un test humain visuel et tactile H1**.
+
+## Résultats techniques observés le 27 octobre 2026
+
+- **Export réel : VALIDÉ** via [run 40461694868](https://github.com/goldaj/glitch_runner/actions/runs/40461694868).
+- **17 invariants Godot : PASS** (ligne de log), **navigateur Chromium : PASS** (`PASS web_smoke` dans les logs).
+- **Files `index.html`, `index.js`, `index.wasm`, `index.pck` : présents et non vides** sur [`gh-pages`](https://github.com/goldaj/glitch_runner/tree/gh-pages).
+- **Capture d'écran d'exécution** : [artifact du run](https://github.com/goldaj/glitch_runner/actions/runs/40461694868/artifacts/12714877353).
+- **Build ZIP** : [artifact du run](https://github.com/goldaj/glitch_runner/actions/runs/40461694868/artifacts/12714967049).
+- **Accès public par URL** : non confirmé ; dépend de Settings → Pages. **Test humain d'agrément H1** : non fait.

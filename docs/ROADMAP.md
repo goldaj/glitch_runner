@@ -50,6 +50,7 @@
 - [x] P1.W2 Ajouter workflow export HTML/WASM/PCK + ZIP + publication dans `gh-pages` (source écrite, **à valider en run**).
 - [x] P1.W3 Documenter lancement un-clic, limites et activation Settings → Pages.
 - [x] P1.W4a Export/ZIP/gh-pages validés en CI sur eecfd61 (run 40461342279 : 17 invariants, fichiers Web et branche gh-pages observés).
-- [x] P1.W4b Script smoke navigateur Playwright **écrit**, exécution réelle à contrôler.
-- [ ] P1.W4c Confirmer smoke navigateur vert et accès HTTPS (ce dernier dépend d'une activation Pages propriétaire).
+- [x] P1.W4b Browser smoke réel **observé vert** (run 40461694868, Chromium affiche canvas, clavier répond, pas d'erreur JS).
+- [x] P1.W4c Présence des fichiers sur gh-pages et ZIP/capture en artifacts vérifiée.
+- [ ] P1.W4d Accès HTTPS public : activation GitHub Pages dans Settings par le propriétaire du dépôt, puis test du lien.
 - [ ] P1.W5 Réaliser H1 humain avec la page de test ; même blocage avant G1.

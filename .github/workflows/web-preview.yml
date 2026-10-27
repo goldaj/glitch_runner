@@ -31,10 +31,21 @@ jobs:
           echo "/tmp" >> "$GITHUB_PATH"
           /tmp/Godot_v4.7.2-stable_linux.x86_64 --headless --version
 
+      - name: Cache the selected single-thread web template
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/godot/export_templates/4.7.2.stable
+          key: godot-4.7.2.stable-web-nothreads-v1
+
       - name: Install official web export template (single-thread, GitHub Pages compatible)
         shell: bash
         run: |
           set -euo pipefail
+          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.7.2.stable"
+          if test -s "$TEMPLATE_DIR/web_nothreads_release.zip"; then
+            echo "Using cached official Godot Web template"
+            exit 0
+          fi
           curl --fail --location --retry 3 --output /tmp/godot-templates.tpz "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz"
           TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.7.2.stable"
           mkdir -p "$TEMPLATE_DIR"
