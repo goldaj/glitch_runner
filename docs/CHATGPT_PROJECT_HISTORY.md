@@ -55,3 +55,6 @@ La CI [40461694868](https://github.com/goldaj/glitch_runner/actions/runs/4046169
 
 ## 2026-10-27 — Correction complémentaire sur les sauts (assistant, résumé reconstruit)
 Le premier correctif pente passait les tests du modèle et l'export navigateur, mais une relecture a repéré un autre écrêtage strict en vol (±550 px/s) : un saut après une descente pouvait annuler l'élan. Modification du contrôle aérien pour distinguer la vitesse fournie par les commandes et le surplus gagné ; tests pour la conservation au décollage et après réception. Ceci reste une vérification de physique pré-playtest H1, sans G1.
+
+## 2026-10-27 — Résultats réels de la correction des pentes (assistant, résumé reconstruit)
+Le premier changement de force de pente/cap a passé son import et ses tests. Une correction complémentaire a levé l'écrêtage de la vitesse aérienne (qui perdait l'élan lors des sauts), puis le HUD `vmax` a été réaligné sur la vitesse horizontale. Les CI du code final `7448652` ont été observées vertes : **29 invariants** (runs 40463364151/40463367736), **export navigateur Chromium et push sur gh-pages** (40463364187). GitHub Pages était auparavant accessible selon le propriétaire. Le retour sur le **nouveau** ressenti reste à recueillir ; aucune validation H1 n'est inventée. Ticket #2 commenté avec le problème et les conditions de vérification.

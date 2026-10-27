@@ -81,3 +81,9 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 
 ### Suivi P1.6b
 En révisant P1.6, un second écrêtage a été identifié : en vol, `air_velocity.x` était bornée à ±550 px/s à **chaque tick**. Même si une pente produisait plus, sauter aurait supprimé le gain. Le correctif de contrôle aérien applique désormais une limite à l'**accélération fournie par la commande**, mais conserve la vitesse horizontale exceptionnelle tant qu'elle reste sous la borne de sécurité P1. Tests additionnels saut et réception. H1 demeure humainement non validée. Reporter les résultats CI du commit séparément.
+
+## Confirmation des correctifs de pente sur la branche Web (27/10/2026)
+- [Godot CI 40463364151](https://github.com/goldaj/glitch_runner/actions/runs/40463364151) et [40463367736](https://github.com/goldaj/glitch_runner/actions/runs/40463367736) : **PASS movement_lab: 29 invariants**, y compris pente à commandes/vitesses égales, conservation overspeed au sol, saut et atterrissage.
+- [Export Web + Chromium + publication 40463364187](https://github.com/goldaj/glitch_runner/actions/runs/40463364187) : **SUCCESS** sur commit `7448652`; dernière évolution HUD incluse.
+- Le propriétaire a confirmé que GitHub Pages s'ouvre normalement, **avant** ces correctifs. Le prochain retour humain sur la physique corrigée reste requis, voir [issue #2](https://github.com/goldaj/glitch_runner/issues/2).
+- PR #6 demeure branche Web isolée, ne pas fusionner automatiquement. Le site `gh-pages` est un **build généré**, ne pas y corriger la physique à la main.

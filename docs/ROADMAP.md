@@ -52,7 +52,7 @@
 - [x] P1.W4a Export/ZIP/gh-pages validés en CI sur eecfd61 (run 40461342279 : 17 invariants, fichiers Web et branche gh-pages observés).
 - [x] P1.W4b Browser smoke réel **observé vert** (run 40461694868, Chromium affiche canvas, clavier répond, pas d'erreur JS).
 - [x] P1.W4c Présence des fichiers sur gh-pages et ZIP/capture en artifacts vérifiée.
-- [ ] P1.W4d Accès HTTPS public : activation GitHub Pages dans Settings par le propriétaire du dépôt, puis test du lien.
+- [x] P1.W4d Accès HTTPS public : activé par le propriétaire ; lancement du jeu confirmé dans son navigateur. Les futures mises à jour suivent les déploiements GitHub Pages.
 - [ ] P1.W5 Réaliser H1 humain avec la page de test ; même blocage avant G1.
 
 ## P1.6 — Correction du ressenti des pentes (retour utilisateur 2026-10-27)
@@ -63,3 +63,5 @@
 - [ ] Contrôler run Godot headless, Playwright export Web et version publiée gh-pages.
 - [ ] Faire valider le nouveau ressenti par jeu humain, comparer profils A/B ; H1 non validée.
 - [x] P1.6b Préservation du surplus aussi **au saut et à la réception** (sinon ancien plafonnement air à 550 px/s détruit l'élan d'une descente), tests ajoutés ; CI à confirmer.
+- [x] P1.6c Validation Godot **29 invariants PASS**, CI runs [40463364151](https://github.com/goldaj/glitch_runner/actions/runs/40463364151) et [40463367736](https://github.com/goldaj/glitch_runner/actions/runs/40463367736), export + navigateur Chromium + publication `gh-pages` **SUCCESS** ([40463364187](https://github.com/goldaj/glitch_runner/actions/runs/40463364187)).
+- [ ] P1.6d Revalidation du **ressenti** après diffusion Pages : comparaison montée/plat/descente et saut à haute vitesse en profil A/B, suivre issue #2.

@@ -65,3 +65,11 @@ La chaîne d'export inclut désormais un contrôle **Chromium + Playwright** : s
 
 ## Retour du premier playtest et version corrigée P1.6
 Le test humain du 27 octobre a révélé un défaut de ressenti : les pentes ne semblent pas changer la vitesse. Le moteur limitait la vitesse après application de la gravité, effaçant les accélérations en descente. La correction P1.6 laisse désormais la pente dépasser le plafond de course normal et fait ralentir la montée même lorsque la direction est maintenue. Le HUD affiche la **vitesse horizontale `vx`** et le type de terrain. Réessayer la descente en profil **B inertiel**, puis le même trajet sur du plat et en montée. Les tests automatiques ne remplacent pas la confirmation humaine.
+
+## Vérification P1.6 (correction pentes) — 27 octobre 2026
+Le premier jeu Web a été ouvert avec succès par le propriétaire ; GitHub Pages est activé. Suite au retour de ressenti :
+- L'accélération au sol n'efface plus l'apport des pentes à 420 px/s ; l'élan supplémentaire se dissipe progressivement.
+- Les sauts et réceptions conservent aussi l'élan gagné, au lieu de plafonner la composante horizontale en vol.
+- HUD : `vx`, `vmax` horizontale, témoin « (+ élan) » et indication plat/descente/montée dans le sens du déplacement.
+- [29 tests du mouvement validés](https://github.com/goldaj/glitch_runner/actions/runs/40463364151) et [export + Chrome + branche gh-pages validés](https://github.com/goldaj/glitch_runner/actions/runs/40463364187).
+- **H1 toujours non validée** : revenir sur l'URL publique après déploiement, comparer A/B et noter sensations et erreurs dans [issue #2](https://github.com/goldaj/glitch_runner/issues/2).
