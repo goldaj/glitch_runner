@@ -82,3 +82,6 @@ Le 27 octobre, un essai humain a signalé des passages sous le terrain en sautan
 - Branche correctrice : `fix/swept-ground-contact`.
 - [Historique CI initial](https://github.com/goldaj/glitch_runner/actions/runs/40548857720) (avant l'ajout du contrôle obligatoire au Web).
 - Le Web ne publie cette branche qu'après succès du nouveau contrôle dédié. Une CI verte vérifie le modèle et le chargement Chromium, mais **les sensations et l'absence de toute autre régression restent à éprouver réellement en jeu**.
+
+## Confirmation de la correction terrain en Web
+La correction de collision #8 a passé les 29 tests de mouvement, 469 tests de niveau et **279 tests de contact**. Le [premier pipeline Web corrigé 40550723378](https://github.com/goldaj/glitch_runner/actions/runs/40550723378) a également testé le jeu dans Chrome et créé le build `gh-pages`. Des jobs simultanés ont ensuite créé un conflit de push de la branche compilée, sans échec des tests Godot ; les publications sont à nouveau sérialisées dans un seul groupe CI. Après le dernier déploiement, faire un **Ctrl+F5** avant de retester les sauts vers une pente montante. Le ticket [#8](https://github.com/goldaj/glitch_runner/issues/8) ne sera clôturé que suite à un essai réel, pas à une CI verte.

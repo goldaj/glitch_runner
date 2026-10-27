@@ -11,11 +11,10 @@ on:
 permissions:
   contents: write
 
-# Isolated recovery from the 2026-10-27 stalled legacy apt/Chromium installation.
-# Do not share concurrency with the historical web-preview workflow while its
-# cancelled runner is still pending shutdown. Migrate back after incident #8.
+# Serialize all branches publishing to the SAME gh-pages ref. Two concurrent
+# force-pushes race (HTTP remote rejects ref lock) even when both games are green.
 concurrency:
-  group: web-preview-ground-contact
+  group: web-preview
   cancel-in-progress: true
 
 jobs:

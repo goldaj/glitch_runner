@@ -79,3 +79,6 @@
 - [x] Premier correctif CI **vert** (40548857720), anciens tests et régressions spécifiques.
 - [x] Compter les scénarios paramétrés individuellement dans la batterie de régression ; ajout du test comme **garde de publication** Web.
 - [ ] Vérifier la CI et la publication réelles du dernier commit, puis faire refaire les sauts en diagonale au joueur. Pas de déclaration H1 positive avant cet essai.
+- [x] Bug #8 : **279 vérifications collision PASS** dans run [40549664895](https://github.com/goldaj/glitch_runner/actions/runs/40549664895) ; [40550723378](https://github.com/goldaj/glitch_runner/actions/runs/40550723378) confirme navigateur Chrome et publication.
+- [x] Correction CI : éviter téléchargement système bloquant de Chromium en utilisant Chrome runner ; rétablir groupe unique de publication après conflit `gh-pages` entre deux workflows.
+- [ ] Vérifier le dernier run de publication sérialisée et l'URL, puis retour utilisateur H1 (chute à travers texture réellement disparue).

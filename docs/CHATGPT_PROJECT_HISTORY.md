@@ -79,3 +79,6 @@ Le premier changement de force de pente/cap a passé son import et ses tests. Un
 
 ### 2026-10-27 — Blocage indépendant dans la CI Web
 Après les 777 contrôles Godot réussis, la CI d'export Web s'est prolongée sur l'installation `npx playwright install chromium --with-deps`, sans résultat navigateur au moment du diagnostic. Le workflow a été modifié pour utiliser prioritairement le navigateur Chrome préinstallé sur Ubuntu runner via variable `CHROME_BIN`, avec installation Chromium de secours sans paquet apt. Le test Chromium/Chrome reste obligatoire, jamais supprimé pour accélérer la publication. État du nouveau run à confirmer.
+
+### 2026-10-27 — Retour au groupe de publication unique
+Après que le workflow [40550723378](https://github.com/goldaj/glitch_runner/actions/runs/40550723378) a exporté/poussé avec succès le correctif (commit `521073a`), le deuxième workflow [40550991326](https://github.com/goldaj/glitch_runner/actions/runs/40550991326) a échoué sur une concurrence de ref `gh-pages`, non sur les tests (qui étaient verts). L'ancien pipeline Chromium avec apt a fini par être annulé. La publication de plusieurs branches a été **re-sérialisée** via le groupe unique `web-preview` pour éviter que deux force-pushs se chevauchent. Nouveau run à vérifier, en distinguant réussite du moteur, GitHub Actions et Pages.
