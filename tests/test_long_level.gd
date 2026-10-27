@@ -89,6 +89,19 @@ func _run() -> void:
 			break
 	_check(not jumper.dead and jumper.feet.x > gap.y + 15.0, "normal jump can cross the first gap")
 
+	# Every mandatory gap must be passable at a normal running speed with held jump,
+	# including uphill/downhill approaches. These are setup scenarios, not a playtest.
+	for gap_index in range(Course.GAPS.size()):
+		var crossing: Vector2 = Course.GAPS[gap_index]
+		var ordinary = Model.new()
+		ordinary.feet = Vector2(crossing.x - 105.0, Course.height_at(crossing.x - 105.0))
+		ordinary.ground_speed = 420.0
+		for step_index in range(90):
+			ordinary.step(1.0, step_index == 0, true, DT)
+			if ordinary.dead:
+				break
+		_check(not ordinary.dead and ordinary.feet.x > crossing.y + 25.0, "ordinary forward-held jump crosses pit %d" % gap_index)
+
 	if failures.is_empty():
 		print("PASS long_level: %d invariants, %d collectibles and %d zones" % [checks, total_collectibles.size(), Course.SECTION_COUNT])
 		quit(0)
