@@ -20,3 +20,5 @@ Vérification : `godot --headless --editor --path . --import --quit` puis `godot
 [Archive complète du concept](docs/INCUBATOR_CONCEPT.md) · [Étude](docs/RESEARCH.md) · [Roadmap](docs/ROADMAP.md) · [Handoff Codex](docs/CODEX_HANDOFF.md) · [Historique des échanges](docs/CHATGPT_PROJECT_HISTORY.md) · [AGENTS](AGENTS.md)
 
 Licence [MIT](LICENSE). Indépendant des franchises citées comme inspirations.
+
+[Protocole de playtest H1 A/B](docs/PLAYTEST_H1.md) : touches **1** (A réactif) et **2** (B inertiel), départ et chrono remis à zéro à chaque changement. Consigner les observations avant de décider du premier glitch.

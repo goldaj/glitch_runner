@@ -15,6 +15,11 @@ var feet: Vector2 = Vector2.ZERO
 var ground_speed: float = 0.0
 var air_velocity: Vector2 = Vector2.ZERO
 var grounded: bool = true
+var responsive_profile: bool = false
+
+func set_responsive_profile(is_responsive: bool) -> void:
+	responsive_profile = is_responsive
+	reset()
 
 func _init() -> void:
 	reset()
@@ -32,13 +37,13 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 	if grounded:
 		var slope: float = Course.slope_at(feet.x)
 		if absf(axis) > 0.05:
-			var force: float = GROUND_ACCEL
+			var force: float = GROUND_ACCEL * (2.0 if responsive_profile else 1.0)
 			if ground_speed * axis < 0.0:
-				force = GROUND_BRAKE
+				force = GROUND_BRAKE * (1.5 if responsive_profile else 1.0)
 			ground_speed += axis * force * dt
 		else:
-			ground_speed = move_toward(ground_speed, 0.0, ROLL_FRICTION * dt)
-		ground_speed += SLOPE_FORCE * slope / sqrt(1.0 + slope * slope) * dt
+			ground_speed = move_toward(ground_speed, 0.0, ROLL_FRICTION * (3.0 if responsive_profile else 1.0) * dt)
+		ground_speed += SLOPE_FORCE * (0.4 if responsive_profile else 1.0) * slope / sqrt(1.0 + slope * slope) * dt
 		ground_speed = clampf(ground_speed, -GROUND_SPEED_CAP, GROUND_SPEED_CAP)
 		if jump_pressed:
 			grounded = false

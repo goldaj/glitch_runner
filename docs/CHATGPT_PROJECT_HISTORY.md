@@ -21,3 +21,6 @@ Couverture **partielle**, créée le **27/10/2026**. Les heures exactes des mess
 > Et en avance !
 
 **Assistant (résumé reconstruit, non verbatim) :** audit GitHub : nouveau dépôt public avec licence MIT et simple README, aucun code. Reprise des consignes connues de travail chercheur senior + ingénieur, progression autonome sous-étape par sous-étape, branche dédiée, pas de fusion, `AGENTS.md` et archive du contexte accessibles à Codex, tests réels et limites transparentes. Choix provisoire Godot 4.7.2 stable vérifié dans la publication officielle ; développement du laboratoire **sans glitch** avant jeu complet. Suppression de la fiche incubator prévue sur PR séparée.
+
+## 2026-10-27 — Suite de P1 (assistant, résumé reconstruit)
+La CI GitHub du laboratoire initial a été vérifiée **successful** (run 40457925457 : import et tests). L'assistant a ajouté deux réglages A réactif/B inertiel sélectionnables et un protocole de playtest H1. Les changements techniques A/B restent soumis à leur propre exécution de CI. Aucun test humain n'a été exécuté ni simulé.

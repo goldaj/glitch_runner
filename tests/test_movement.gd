@@ -4,11 +4,13 @@ const Course = preload("res://scripts/course_profile.gd")
 const Model = preload("res://scripts/movement_model.gd")
 const DT: float = 1.0 / 60.0
 var failures: Array[String] = []
+var checks: int = 0
 
 func _initialize() -> void:
 	call_deferred("_run_tests")
 
 func _check(condition: bool, reason: String) -> void:
+	checks += 1
 	if not condition:
 		failures.append(reason)
 
@@ -56,8 +58,21 @@ func _run_tests() -> void:
 	runner.reset()
 	_check(is_equal_approx(runner.ground_speed, 0.0), "reset clears speed")
 	_check(is_equal_approx(runner.feet.x, 130.0), "reset restores spawn")
+	var inertial = Model.new()
+	var reactive = Model.new()
+	reactive.set_responsive_profile(true)
+	for i in range(60):
+		inertial.step(1.0, false, false, DT)
+		reactive.step(1.0, false, false, DT)
+	for i in range(8):
+		inertial.step(0.0, false, false, DT)
+		reactive.step(0.0, false, false, DT)
+	_check(reactive.responsive_profile, "A responsive mode is active")
+	_check(reactive.ground_speed < inertial.ground_speed, "A loses speed faster than B")
+	reactive.set_responsive_profile(false)
+	_check(not reactive.responsive_profile and reactive.feet.x == 130.0, "profile change resets trial")
 	if failures.is_empty():
-		print("PASS movement_lab: 10 invariants")
+		print("PASS movement_lab: %d invariants" % checks)
 		quit(0)
 	else:
 		for failure in failures:

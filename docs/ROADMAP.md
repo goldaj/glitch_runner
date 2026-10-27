@@ -11,7 +11,9 @@
 - [x] P1.2 Contrôleur vitesse au sol, friction, freinage, pentes, saut variable **écrit**.
 - [x] P1.3 Terrain dessiné, joueur, caméra anticipée, HUD, chrono local et reset **écrits**.
 - [x] P1.4 Tests unitaires headless, workflow GitHub Actions **écrits**.
-- [ ] P1.5 Validation du run Godot/CI **observée**, revue caméra/manette et comparatif A/B **humain**. Ne pas déclarer H1 validée sur un simple test CI.
+- [x] P1.5a Import + tests Godot 4.7.2 observés **verts** dans GitHub Actions (run 40457925457).
+- [x] P1.5b Deux profils A/B sélectionnables + protocole de recueil **écrits** ; tests techniques à revalider après modification.
+- [ ] P1.5c Comparatif A/B **humain** clavier/manette, synthèse observations et décision H1. Ne pas déclarer H1 validée sur un simple test CI.
 
 **P2 — G1, Corner Slip (bloqué par H1)**
 - [ ] P2.1 Choisir véritable système de collisions murs/coins et éviter tunneling.

@@ -8,6 +8,10 @@ var runner = MovementModel.new()
 var ticks: int = 0
 var finished: bool = false
 var reset_held: bool = false
+var profile_one_held: bool = false
+var profile_two_held: bool = false
+var jumps: int = 0
+var max_run_speed: float = 0.0
 var follow_camera: Camera2D
 var hud: Label
 
@@ -24,18 +28,31 @@ func _ready() -> void:
 	_update_hud()
 
 func _physics_process(delta: float) -> void:
+	var profile_one: bool = Input.is_key_pressed(KEY_1)
+	var profile_two: bool = Input.is_key_pressed(KEY_2)
+	if profile_one and not profile_one_held:
+		_select_profile(true)
+	if profile_two and not profile_two_held:
+		_select_profile(false)
+	profile_one_held = profile_one
+	profile_two_held = profile_two
 	var is_reset: bool = Input.is_key_pressed(KEY_R)
 	if is_reset and not reset_held:
 		runner.reset()
 		ticks = 0
 		finished = false
+		jumps = 0
+		max_run_speed = 0.0
 	reset_held = is_reset
 
 	if not finished:
 		var axis: float = Input.get_axis("ui_left", "ui_right")
 		var jump_down: bool = Input.is_action_just_pressed("ui_accept")
 		var jump_held: bool = Input.is_action_pressed("ui_accept")
+		if jump_down and runner.grounded:
+			jumps += 1
 		runner.step(axis, jump_down, jump_held, delta)
+		max_run_speed = maxf(max_run_speed, runner.speed())
 		ticks += 1
 		if runner.feet.x >= FINISH_X:
 			finished = true
@@ -46,10 +63,18 @@ func _physics_process(delta: float) -> void:
 	_update_hud()
 	queue_redraw()
 
+func _select_profile(is_responsive: bool) -> void:
+	runner.set_responsive_profile(is_responsive)
+	ticks = 0
+	finished = false
+	jumps = 0
+	max_run_speed = 0.0
+
 func _update_hud() -> void:
 	var seconds: float = float(ticks) / 60.0
 	var status: String = "ARRIVÉE (R pour recommencer)" if finished else "Laboratoire P1 · sans glitch"
-	hud.text = "%s\nChrono : %.2f s  |  vitesse : %.0f px/s\nFlèches : déplacement · Espace/Entrée : saut · R : reset" % [status, seconds, runner.speed()]
+	var label: String = "A réactif" if runner.responsive_profile else "B inertiel"
+	hud.text = "%s  |  Profil : %s (1=A, 2=B)\nTemps : %.2f s | vitesse : %.0f px/s | vmax : %.0f px/s | sauts : %d\n←/→ déplacement · Espace/Entrée saut · R reset" % [status, label, seconds, runner.speed(), max_run_speed, jumps]
 
 func _draw() -> void:
 	draw_rect(Rect2(0.0, 0.0, Course.END_X, 820.0), Color(0.10, 0.15, 0.22), true)

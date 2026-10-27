@@ -26,3 +26,8 @@
 Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce fichier, résultats/échecs et du journal de contexte à chaque sous-étape. Aucune capture de toutes les conversations historiques n'est disponible : **pas de faux verbatim**.
 
 **État déclaré au moment de la création :** code écrit, CI à observer ; aucun playtest humain et aucune validation de game feel ; cross-platform et anti-cheat non testés.
+
+## Avancement technique additionnel — 27/10/2026
+- Première CI observée **verte**, run https://github.com/goldaj/glitch_runner/actions/runs/40457925457 : installation Godot 4.7.2, import, tests d'invariants, toutes étapes successful.
+- Ajout ensuite d'un protocole H1 A/B, touches 1 et 2, compteur de sauts, vitesse max et tests distinctifs du freinage ; **nouveau commit à vérifier en CI**.
+- Le protocole complet se trouve dans `docs/PLAYTEST_H1.md`. H1 **toujours non validée par des personnes**. N'ajouter ni G1 ni G2 avant cette validation.
