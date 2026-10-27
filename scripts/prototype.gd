@@ -52,7 +52,8 @@ func _physics_process(delta: float) -> void:
 		if jump_down and runner.grounded:
 			jumps += 1
 		runner.step(axis, jump_down, jump_held, delta)
-		max_run_speed = maxf(max_run_speed, runner.speed())
+		var current_vx: float = runner.ground_speed if runner.grounded else runner.air_velocity.x
+		max_run_speed = maxf(max_run_speed, absf(current_vx))
 		ticks += 1
 		if runner.feet.x >= FINISH_X:
 			finished = true
@@ -98,6 +99,7 @@ func _draw() -> void:
 	for i in range(Course.POINTS.size() - 1):
 		draw_line(Course.POINTS[i], Course.POINTS[i + 1], Color(0.45, 0.85, 0.74), 4.0)
 	draw_line(Vector2(FINISH_X, Course.height_at(FINISH_X) - 115.0), Vector2(FINISH_X, Course.height_at(FINISH_X)), Color(1.0, 0.80, 0.33), 5.0)
-	var speed_ratio: float = clampf(runner.speed() / MovementModel.GROUND_SPEED_CAP, 0.0, 1.0)
+	var visual_vx: float = runner.ground_speed if runner.grounded else runner.air_velocity.x
+	var speed_ratio: float = clampf(absf(visual_vx) / MovementModel.GROUND_SPEED_CAP, 0.0, 1.0)
 	draw_rect(Rect2(runner.feet.x - 11.0, runner.feet.y - 31.0, 22.0, 31.0), Color(0.98, 0.95 - speed_ratio * 0.36, 0.34), true)
 	draw_circle(Vector2(runner.feet.x, runner.feet.y - 36.0), 8.0, Color(1.0, 0.96, 0.75))
