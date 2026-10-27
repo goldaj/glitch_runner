@@ -11,8 +11,11 @@ on:
 permissions:
   contents: write
 
+# Isolated recovery from the 2026-10-27 stalled legacy apt/Chromium installation.
+# Do not share concurrency with the historical web-preview workflow while its
+# cancelled runner is still pending shutdown. Migrate back after incident #8.
 concurrency:
-  group: web-preview
+  group: web-preview-ground-contact
   cancel-in-progress: true
 
 jobs:
