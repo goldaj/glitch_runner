@@ -58,3 +58,9 @@ Jamais fusion automatique, jamais écraser Codex ou `main`. Mise à jour de ce f
 - URL prévue **une fois activée** : https://goldaj.github.io/glitch_runner/ .
 - **Aucun G1/G2 implémenté** : la page est le labo A/B P1 pour tester H1. Ne pas la présenter comme jeu complet.
 - Rester factuel : l'existence d'un workflow n'établit pas sa réussite. Reporter le résultat d'export, la présence de gh-pages, et la disponibilité HTTPS après vérification.
+
+## État Web après première CI (27/10/2026)
+- Workflow export **réellement successful** : https://github.com/goldaj/glitch_runner/actions/runs/40461342279
+- 17 invariants Godot PASS, `index.html`, `index.js`, `index.wasm` (~38 Mio), `index.pck` et fichiers annexes exportés et commités sur la branche [gh-pages](https://github.com/goldaj/glitch_runner/tree/gh-pages) (commit `bd5a666`).
+- Artifact Web ZIP : [exécution GitHub](https://github.com/goldaj/glitch_runner/actions/runs/40461342279/artifacts/12714611805). **Page HTTPS non confirmée active à cette date.**
+- Ajout ultérieur d'un contrôle navigateur dans `tests/web_smoke.mjs` (Playwright/Chromium, touches, JS errors, capture). **Ne pas prétendre que ce nouveau contrôle a passé sans run validé**.

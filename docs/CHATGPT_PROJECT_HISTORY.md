@@ -40,3 +40,6 @@ Le modèle P1 applique un plafond strict à la vitesse au sol (et en l'air). Ris
 > Pour tester le jeu, tu me feras une version web toute prête que j'ai juste à lancer et tu la mettras dans le repo
 
 **Assistant (résumé reconstruit, non verbatim) :** conception d'un export Web Godot réel, sans threads pour l'hébergement sur GitHub Pages, dans une branche de travail distincte issue de P1, sans modifier les mécaniques. Ajout d'une configuration d'export, d'une CI exportant vers `gh-pages` et offrant un artifact ZIP, d'un guide pour jouer depuis l'URL et de la passation Codex. L'activation initiale GitHub Pages dépend des réglages du dépôt accessibles au propriétaire et ne peut être présumée. L'exécution et la publication sont à confirmer à partir des résultats CI.
+
+## 2026-10-27 — Premier export Web vérifié (assistant, résumé reconstruit)
+L'export officiel Godot 4.7.2 single-thread a passé sa première CI (run 40461342279), comprenant 17 tests de déplacement réussis, création d'une archive ZIP `glitch-runner-web-playtest`, et commit des fichiers HTML/WASM/JS/PCK sur la branche `gh-pages`. GitHub Pages n'a pas encore été confirmé actif (réglage propriétaire). Un smoke test navigateur Playwright/Chromium a ensuite été ajouté, en attente d'observation CI ; aucune validation de ressenti par un humain n'a eu lieu.

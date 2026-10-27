@@ -49,3 +49,7 @@ Puis ouvrir `http://localhost:8000/`. Ce mode ne demande ni Godot ni compilation
 - Version Web single-thread : pas d'exigence `SharedArrayBuffer` ni en-têtes cross-origin isolation.
 - Aucune validation visuelle dans un navigateur ou sur mobile n'est implicite dans l'export Godot réussi. Signaler séparément export, publication, chargement HTTP et plaisir de jeu.
 - Pas de possibilité de jouer hors ligne par simple double clic sur un unique `.html` Godot exporté : le runtime dépend de ses ressources liées.
+
+## Contrôle navigateur en CI
+
+La chaîne d'export inclut désormais un contrôle **Chromium + Playwright** : serveur HTTP local, téléchargement de `index.wasm` et `index.pck`, démarrage réel du moteur, présence d'un canvas visible, émulation des touches de déplacement et capture d'écran dans les artifacts GitHub Actions. Cette vérification est plus forte qu'un simple export réussi, mais **ne remplace pas un test humain visuel et tactile H1**.

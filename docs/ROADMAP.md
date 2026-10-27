@@ -49,5 +49,7 @@
 - [x] P1.W1 Ajouter le préréglage Web Godot 4.7.2, **sans threads** pour GitHub Pages ; aucun changement de physique.
 - [x] P1.W2 Ajouter workflow export HTML/WASM/PCK + ZIP + publication dans `gh-pages` (source écrite, **à valider en run**).
 - [x] P1.W3 Documenter lancement un-clic, limites et activation Settings → Pages.
-- [ ] P1.W4 Valider la CI **et** les fichiers réellement publiés puis l'accès HTTPS (celui-ci peut attendre l'activation Pages par le propriétaire).
+- [x] P1.W4a Export/ZIP/gh-pages validés en CI sur eecfd61 (run 40461342279 : 17 invariants, fichiers Web et branche gh-pages observés).
+- [x] P1.W4b Script smoke navigateur Playwright **écrit**, exécution réelle à contrôler.
+- [ ] P1.W4c Confirmer smoke navigateur vert et accès HTTPS (ce dernier dépend d'une activation Pages propriétaire).
 - [ ] P1.W5 Réaliser H1 humain avec la page de test ; même blocage avant G1.
