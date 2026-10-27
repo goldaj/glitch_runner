@@ -62,3 +62,4 @@
 - [x] Ajouter tests de la descente, montée, plat, surplus, sens inverse ; **code écrit, CI à vérifier**.
 - [ ] Contrôler run Godot headless, Playwright export Web et version publiée gh-pages.
 - [ ] Faire valider le nouveau ressenti par jeu humain, comparer profils A/B ; H1 non validée.
+- [x] P1.6b Préservation du surplus aussi **au saut et à la réception** (sinon ancien plafonnement air à 550 px/s détruit l'élan d'une descente), tests ajoutés ; CI à confirmer.

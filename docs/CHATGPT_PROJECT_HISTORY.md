@@ -52,3 +52,6 @@ La CI [40461694868](https://github.com/goldaj/glitch_runner/actions/runs/4046169
 > le test se lance, mais j'ai pas l'impression que les pentes accelère la vitesse en descendant ou la ralenti en montant
 
 **Assistant (résumé reconstruit, non verbatim) :** inspection des constantes et calculs. La force des pentes existait, mais était masquée par un plafonnement strict de la vitesse appliqué après la gravité et par l'accélération continue sous input, spécialement en montée. Révision de la logique de mouvement : cap de l'**effort utilisateur** plutôt que de la vitesse acquise du terrain, drag progressif du surplus, pente relative au mouvement, HUD de vitesse horizontale ; tests contrôlés pour quantifier descente/plat/montée sous mêmes commandes. Pas d'ajout de glitch G1, pas de passage H1, CI et publication à constater après exécution.
+
+## 2026-10-27 — Correction complémentaire sur les sauts (assistant, résumé reconstruit)
+Le premier correctif pente passait les tests du modèle et l'export navigateur, mais une relecture a repéré un autre écrêtage strict en vol (±550 px/s) : un saut après une descente pouvait annuler l'élan. Modification du contrôle aérien pour distinguer la vitesse fournie par les commandes et le surplus gagné ; tests pour la conservation au décollage et après réception. Ceci reste une vérification de physique pré-playtest H1, sans G1.

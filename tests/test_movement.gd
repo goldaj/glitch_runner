@@ -110,6 +110,23 @@ func _run_tests() -> void:
 	descent_from_other_side.ground_speed = -250.0
 	descent_from_other_side.step(0.0, false, false, DT)
 	_check(descent_from_other_side.ground_speed < -250.0, "gravity accelerates descending toward the left too")
+	# A slope-generated run must stay fast even when jumping, then landing.
+	var flight = Model.new()
+	flight.feet = Vector2(1300.0, Course.height_at(1300.0))
+	flight.ground_speed = 680.0
+	flight.step(1.0, true, true, DT)
+	_check(not flight.grounded, "overspeed launch lifts off")
+	_check(flight.air_velocity.x > Model.AIR_SPEED_CAP, "jump preserves horizontal speed above air steering cap")
+	var airborne_before: float = flight.air_velocity.x
+	flight.step(1.0, false, true, DT)
+	_check(flight.air_velocity.x >= airborne_before - 0.01, "steering does not clamp exceptional momentum")
+	var landing = Model.new()
+	landing.feet = Vector2(1300.0, Course.height_at(1300.0) - 1.0)
+	landing.grounded = false
+	landing.air_velocity = Vector2(670.0, 200.0)
+	landing.step(1.0, false, false, DT)
+	_check(landing.grounded, "high speed runner lands on flat terrain")
+	_check(landing.ground_speed > Model.GROUND_SPEED_CAP, "landing retains exceptional horizontal speed")
 	if failures.is_empty():
 		print("PASS movement_lab: %d invariants" % checks)
 		quit(0)

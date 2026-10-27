@@ -71,7 +71,13 @@ func step(axis: float, jump_pressed: bool, jump_held: bool, dt: float) -> void:
 		feet.x = clampf(feet.x + ground_speed * dt, Course.START_X, Course.END_X)
 		feet.y = Course.height_at(feet.x)
 	else:
-		air_velocity.x = clampf(air_velocity.x + axis * AIR_ACCEL * dt, -AIR_SPEED_CAP, AIR_SPEED_CAP)
+		# Air steering fades near the normal air speed, but does NOT erase
+		# momentum that a slope (or later a legitimate glitch) gave us.
+		var air_steer: float = AIR_ACCEL
+		if air_velocity.x * axis >= 0.0:
+			var air_headroom: float = clampf((AIR_SPEED_CAP - air_velocity.x * axis) / AIR_SPEED_CAP, 0.0, 1.0)
+			air_steer *= air_headroom
+		air_velocity.x = clampf(air_velocity.x + axis * air_steer * dt, -GROUND_SAFETY_CAP, GROUND_SAFETY_CAP)
 		if not jump_held and air_velocity.y < -155.0:
 			air_velocity.y = -155.0
 		air_velocity.y += GRAVITY * dt
