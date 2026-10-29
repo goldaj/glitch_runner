@@ -1,0 +1,28 @@
+name: Godot movement lab checks
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Install pinned Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o /tmp/godot.zip "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.7.2-stable_linux.x86_64
+          echo "/tmp" >> "$GITHUB_PATH"
+      - name: Import Godot project
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --editor --path . --import --quit
+      - name: Run movement invariants
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_movement.gd
+      - name: Validate ten-zone level geometry and platform traversal
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_long_level.gd
+      - name: Regression test terrain sweep and real pits
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_ground_contact.gd
+      - name: Smoke run real main scene (180 frames)
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --quit-after 180

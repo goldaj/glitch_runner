@@ -1,0 +1,136 @@
+name: Export and publish web playtest (Godot 4.7.2)
+
+on:
+  push:
+    branches:
+      - feat/web-playtest-preview
+      - feat/long-form-playtest-level
+      - fix/swept-ground-contact
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Serialize all branches publishing to the SAME gh-pages ref. Two concurrent
+# force-pushes race (HTTP remote rejects ref lock) even when both games are green.
+concurrency:
+  group: web-preview
+  cancel-in-progress: true
+
+jobs:
+  web-export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout tested game branch
+        uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.2 stable (official Linux binary)
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output /tmp/godot.zip "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp
+          chmod +x /tmp/Godot_v4.7.2-stable_linux.x86_64
+          echo "/tmp" >> "$GITHUB_PATH"
+          /tmp/Godot_v4.7.2-stable_linux.x86_64 --headless --version
+
+      - name: Cache the selected single-thread web template
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/godot/export_templates/4.7.2.stable
+          key: godot-4.7.2.stable-web-nothreads-v1
+
+      - name: Install official web export template (single-thread, GitHub Pages compatible)
+        shell: bash
+        run: |
+          set -euo pipefail
+          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.7.2.stable"
+          if test -s "$TEMPLATE_DIR/web_nothreads_release.zip"; then
+            echo "Using cached official Godot Web template"
+            exit 0
+          fi
+          curl --fail --location --retry 3 --output /tmp/godot-templates.tpz "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz"
+          TEMPLATE_DIR="$HOME/.local/share/godot/export_templates/4.7.2.stable"
+          mkdir -p "$TEMPLATE_DIR"
+          unzip -jo /tmp/godot-templates.tpz 'templates/web_nothreads_release.zip' 'templates/version.txt' -d "$TEMPLATE_DIR"
+          test -s "$TEMPLATE_DIR/web_nothreads_release.zip"
+          rm -f /tmp/godot-templates.tpz
+          ls -lh "$TEMPLATE_DIR"
+
+      - name: Import source files
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --editor --path . --import --quit
+
+      - name: Verify original movement invariants
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_movement.gd
+
+      - name: Verify ten-zone level geometry and interactions
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_long_level.gd
+      - name: Prevent terrain tunneling regression (issue 8)
+        run: Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_ground_contact.gd
+
+      - name: Export actual playable Godot project to HTML5
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/web
+          Godot_v4.7.2-stable_linux.x86_64 --headless --path . --export-release "Web" build/web/index.html
+          test -s build/web/index.html
+          test -s build/web/index.wasm
+          test -s build/web/index.pck
+          test -s build/web/index.js
+          touch build/web/.nojekyll
+          echo "Web artifacts:"
+          ls -lh build/web
+
+      - name: Reuse preinstalled runner Chrome for Web smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-save playwright@1.64.1
+          if command -v google-chrome >/dev/null 2>&1; then
+            echo "CHROME_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
+            google-chrome --version
+          elif command -v google-chrome-stable >/dev/null 2>&1; then
+            echo "CHROME_BIN=$(command -v google-chrome-stable)" >> "$GITHUB_ENV"
+            google-chrome-stable --version
+          else
+            echo "No preinstalled Chrome; installing Playwright Chromium (without apt dependencies)"
+            npx playwright install chromium
+          fi
+
+      - name: Run exported game in a browser (WebGL2 / JS / WASM smoke)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --bind 127.0.0.1 --directory build/web > /tmp/glitch-runner-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          node tests/web_smoke.mjs
+
+      - name: Upload browser screenshot as visual test evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: glitch-runner-web-smoke-screenshot
+          path: build/web-smoke/success.png
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload downloadable playable site as ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: glitch-runner-web-playtest
+          path: build/web/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish generated build into gh-pages branch in this repo
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./build/web
+          force_orphan: true
+          enable_jekyll: false
+          commit_message: "build(web): export tested movement lab from ${{ github.sha }}"
