@@ -26,3 +26,9 @@ Inventaire direct GitHub et comparaison de l'ensemble des branches : 6 refs, 4 P
 4. Vérifier export Godot Web, GitHub Pages et lanceur local Windows : `gh-pages` est une branche **à historique indépendant**, ne pas la supprimer.
 5. Les anciennes PR fermées sans merge explicite peuvent être ancêtres du code consolidé, ne pas réintroduire leurs vieilles implémentations.
 6. Tests et prod non vérifiés par cet audit ; aucun changement de physique effectué.
+
+
+## Vérification CI distante (30 octobre 2026)
+- [Godot movement lab checks](https://github.com/goldaj/glitch_runner/actions/runs/41046591846) : **success** sur commit documentaire `e6059055b510` ; [déploiement GitHub Pages](https://github.com/goldaj/glitch_runner/actions/runs/40551612754) : **success** sur `gh-pages` (ancienne exécution).
+
+Ce résultat décrit uniquement le workflow cité, pas un test utilisateur, un playtest complet ni une validation de la production. Le prochain agent doit lire les jobs, confirmer la couverture des scénarios demandés et relancer après ses modifications.
